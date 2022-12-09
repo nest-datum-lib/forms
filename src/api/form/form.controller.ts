@@ -202,7 +202,6 @@ export class FormController {
 					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
 					isRequired: true,
 				}),
-				id: Validators.id('id', payload['id']),
 				ids: Validators.arr('ids', payload['ids']),
 			});
 
