@@ -136,7 +136,7 @@ export class FormFieldController {
 	@EventPattern('formField.create')
 	async create(payload) {
 		try {
-			const output = await this.formService.create({
+			const output = await this.formFieldService.create({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
 					isRequired: true,

@@ -22,7 +22,7 @@ import { FormField } from './form-field.entity';
 @Injectable()
 export class FormFieldService extends SqlService {
 	constructor(
-		@InjectRepository(FormField) private readonly FormFieldRepository: Repository<FormField>,
+		@InjectRepository(FormField) private readonly formFieldRepository: Repository<FormField>,
 		private readonly connection: Connection,
 		private readonly cacheService: CacheService,
 	) {
@@ -49,7 +49,7 @@ export class FormFieldService extends SqlService {
 			if (cachedData) {
 				return cachedData;
 			}
-			const output = await this.FormFieldRepository.findAndCount(await this.findMany(payload));
+			const output = await this.formFieldRepository.findAndCount(await this.findMany(payload));
 
 			this.cacheService.set([ 'form', 'field', 'many', payload ], output);
 			
@@ -69,7 +69,7 @@ export class FormFieldService extends SqlService {
 			if (cachedData) {
 				return cachedData;
 			}
-			const output = await this.FormFieldRepository.findOne(await this.findOne(payload));
+			const output = await this.formFieldRepository.findOne(await this.findOne(payload));
 		
 			if (output) {
 				this.cacheService.set([ 'form', 'field', 'one', payload ], output);
@@ -89,7 +89,7 @@ export class FormFieldService extends SqlService {
 			this.cacheService.clear([ 'form', 'field', 'many' ]);
 			this.cacheService.clear([ 'form', 'field', 'one', payload ]);
 
-			await this.dropByIsDeleted(this.FormFieldRepository, payload['id']);
+			await this.dropByIsDeleted(this.formFieldRepository, payload['id']);
 
 			return true;
 		}
@@ -112,7 +112,7 @@ export class FormFieldService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.dropByIsDeleted(this.FormFieldRepository, payload['ids'][i]);
+				await this.dropByIsDeleted(this.formFieldRepository, payload['ids'][i]);
 				i++;
 			}
 			await queryRunner.commitTransaction();
@@ -130,7 +130,7 @@ export class FormFieldService extends SqlService {
 		}
 	}
 
-	async create({ user, ...payload }): Promise<any> {
+	async create({ user, id, data }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
