@@ -23,7 +23,7 @@ import { FormFormOption } from '../form-form-option/form-form-option.entity';
 @Injectable()
 export class FormOptionService extends SqlService {
 	constructor(
-		@InjectRepository(formOption) private readonly formOptionRepository: Repository<formOption>,
+		@InjectRepository(FormOption) private readonly formOptionRepository: Repository<FormOption>,
 		@InjectRepository(FormFormOption) private readonly formFormOptionRepository: Repository<FormFormOption>,
 		private readonly connection: Connection,
 		private readonly cacheService: CacheService,

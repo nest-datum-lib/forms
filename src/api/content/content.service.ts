@@ -61,8 +61,6 @@ export class ContentService extends SqlService {
 		catch (err) {
 			throw new ErrorException(err.message, getCurrentLine(), { user, ...payload });
 		}
-		await this.registryService.clearResources();
-
 		return [ [], 0 ];
 	}
 
