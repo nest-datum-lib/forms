@@ -297,10 +297,47 @@ export class FormService extends SqlService {
 		}
 	}
 
+	async dropFields({ user, ids }): Promise<any> {
+		const queryRunner = await this.connection.createQueryRunner(); 
+
+		try {
+			if (!Array.isArray(ids)) {
+				throw new Error('"ids" prtoperty is not array.');
+			}
+
+			await queryRunner.startTransaction();
+			await this.cacheService.clear([ 'form', 'many' ]);
+			await this.cacheService.clear([ 'field', 'many' ])
+
+			let i = 0;
+
+			while (i < ids.length) {
+				await this.formFieldRepository.delete(ids[i]);
+				i++;
+			}
+			await queryRunner.commitTransaction();
+			
+			return true;
+		}
+		catch (err) {
+			await queryRunner.rollbackTransaction();
+			await queryRunner.release();
+
+			throw new ErrorException(err.message, getCurrentLine(), { user, ids });
+		}
+		finally {
+			await queryRunner.release();
+		}
+	}
+
 	async createFields({ user, id, data }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
+			if (!Array.isArray(data)) {
+				throw new Error('"data" prtoperty is not array.');
+			}
+
 			await queryRunner.startTransaction();
 			await this.cacheService.clear([ 'form', 'many' ]);
 			await this.cacheService.clear([ 'field', 'many' ])
@@ -309,27 +346,23 @@ export class FormService extends SqlService {
 				formId: id,
 			});
 
+			const output = [];
 			let i = 0,
 				ii = 0;
 
 			while (i < data.length) {
-				ii = 0;
+				const formField = await this.formFieldRepository.save({
+					...data[i],
+					id: data[i]['id'] || uuidv4(),
+					formId: id,
+				});
 
-				const option = data[i];
-
-				while (ii < option.length) {
-					const output = await this.formFieldRepository.save({
-						...option[ii],
-						id: option[ii]['id'] || uuidv4(),
-						formId: id,
-					});
-					ii++;
-				}
+				output.push(formField);
 				i++;
 			}
 			await queryRunner.commitTransaction();
 			
-			return true;
+			return output;
 		}
 		catch (err) {
 			await queryRunner.rollbackTransaction();
