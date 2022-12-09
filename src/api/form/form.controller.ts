@@ -194,53 +194,6 @@ export class FormController {
 		}
 	}
 
-	@EventPattern('form.dropFields')
-	async dropFields(payload) {
-		try {
-			const output = await this.formService.dropFields({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
-					isRequired: true,
-				}),
-				ids: Validators.arr('ids', payload['ids']),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
-	@EventPattern('form.createFields')
-	async createFields(payload) {
-		try {
-			const output = await this.formService.createFields({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				data: Validators.arr('data', payload['data']),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
 	@EventPattern('form.createOption')
 	async createOption(payload) {
 		try {

@@ -53,7 +53,7 @@ export class FormService extends SqlService {
 		description: true,
 	};
 
-	async many(payload): Promise<any> {
+	async many({ user, ...payload }): Promise<any> {
 		try {
 			const cachedData = await this.cacheService.get([ 'form', 'many', payload ]);
 
@@ -67,23 +67,47 @@ export class FormService extends SqlService {
 			return output;
 		}
 		catch (err) {
-			throw new ErrorException(err.message, getCurrentLine(), payload);
+			throw new ErrorException(err.message, getCurrentLine(), { user, ...payload });
 		}
 
 		return [ [], 0 ];
 	}
 
-	async one(payload): Promise<any> {
+	async manyFields({ user, id, ...payload }): Promise<any> {
 		try {
-			const cachedData = await this.cacheService.get([ 'form', 'one', payload ]);
+			const cachedData = await this.cacheService.get([ 'form', 'many', payload ]);
+
+			if (cachedData) {
+				return cachedData;
+			}
+			const output = await this.formRepository.findAndCount(await this.findMany(payload));
+
+			await this.cacheService.set([ 'form', 'many', payload ], output);
+			
+			return output;
+		}
+		catch (err) {
+			throw new ErrorException(err.message, getCurrentLine(), { user, id, ...payload });
+		}
+
+		return [ [], 0 ];
+	}
+
+	async one({ user, ...payload }): Promise<any> {
+		try {
+			const cachedData = await this.cacheService.get([ 'form', 'one', { user, ...payload } ]);
 
 			if (cachedData) {
 				return cachedData;
 			}
 			const output = await this.formRepository.findOne(await this.findOne(payload));
 		
-			await this.cacheService.set([ 'form', 'one', payload ], output);
-
+			if (output) {
+				await this.cacheService.set([ 'form', 'one', payload ], output);
+			}
+			if (!output) {
+				return new NotFoundException('Entity is undefined', getCurrentLine(), { user, ...payload });
+			}
 			return output;
 		}
 		catch (err) {
@@ -91,13 +115,14 @@ export class FormService extends SqlService {
 		}
 	}
 
-	async drop(payload): Promise<any> {
+	async drop({ user, ...payload }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'form', 'one', payload ]);
+			
+			this.cacheService.clear([ 'form', 'many' ]);
+			this.cacheService.clear([ 'form', 'one', payload ]);
 
 			await this.formFormFormOptionRepository.delete({ formId: payload['id'] });
 			await this.formFormOptionRepository.delete({ formId: payload['id'] });
@@ -111,20 +136,21 @@ export class FormService extends SqlService {
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 
-			throw new ErrorException(err.message, getCurrentLine(), payload);
+			throw new ErrorException(err.message, getCurrentLine(), { user, ...payload });
 		}
 		finally {
 			await queryRunner.release();
 		}
 	}
 
-	async dropMany(payload): Promise<any> {
+	async dropMany({ user, ...payload }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'form', 'one', payload ]);
+			
+			this.cacheService.clear([ 'form', 'many' ]);
+			this.cacheService.clear([ 'form', 'one', payload ]);
 
 			let i = 0;
 
@@ -142,21 +168,22 @@ export class FormService extends SqlService {
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 
-			throw new ErrorException(err.message, getCurrentLine(), payload);
+			throw new ErrorException(err.message, getCurrentLine(), { user, ...payload });
 		}
 		finally {
 			await queryRunner.release();
 		}
 	}
 
-	async dropOption(payload): Promise<any> {
+	async dropOption({ user, ...payload }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'one' ]);
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'form', 'option', 'many' ]);
+			
+			this.cacheService.clear([ 'form', 'one' ]);
+			this.cacheService.clear([ 'form', 'many' ]);
+			this.cacheService.clear([ 'form', 'option', 'many' ]);
 
 			await this.formFormFormOptionRepository.delete({ formFormOptionId: payload['id'] });
 			await this.formFormOptionRepository.delete({ id: payload['id'] });
@@ -169,7 +196,7 @@ export class FormService extends SqlService {
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 
-			throw new ErrorException(err.message, getCurrentLine(), payload);
+			throw new ErrorException(err.message, getCurrentLine(), { user, ...payload });
 		}
 		finally {
 			await queryRunner.release();
@@ -181,7 +208,8 @@ export class FormService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
+			
+			this.cacheService.clear([ 'form', 'many' ]);
 
 			const output = await this.formRepository.save({
 				...payload,
@@ -213,9 +241,10 @@ export class FormService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'one' ]);
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'form', 'option', 'many' ]);
+			
+			this.cacheService.clear([ 'form', 'one' ]);
+			this.cacheService.clear([ 'form', 'many' ]);
+			this.cacheService.clear([ 'form', 'option', 'many' ]);
 
 			const formFormOption = await this.formFormOptionRepository.save({
 				formId: id,
@@ -250,7 +279,8 @@ export class FormService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
+			
+			this.cacheService.clear([ 'form', 'many' ]);
 
 			await this.formFormFormOptionRepository.delete({
 				formId: id,
@@ -297,91 +327,14 @@ export class FormService extends SqlService {
 		}
 	}
 
-	async dropFields({ user, ids }): Promise<any> {
-		const queryRunner = await this.connection.createQueryRunner(); 
-
-		try {
-			if (!Array.isArray(ids)) {
-				throw new Error('"ids" prtoperty is not array.');
-			}
-
-			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'field', 'many' ])
-
-			let i = 0;
-
-			while (i < ids.length) {
-				await this.formFieldRepository.delete(ids[i]);
-				i++;
-			}
-			await queryRunner.commitTransaction();
-			
-			return true;
-		}
-		catch (err) {
-			await queryRunner.rollbackTransaction();
-			await queryRunner.release();
-
-			throw new ErrorException(err.message, getCurrentLine(), { user, ids });
-		}
-		finally {
-			await queryRunner.release();
-		}
-	}
-
-	async createFields({ user, id, data }): Promise<any> {
-		const queryRunner = await this.connection.createQueryRunner(); 
-
-		try {
-			if (!Array.isArray(data)) {
-				throw new Error('"data" prtoperty is not array.');
-			}
-
-			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'field', 'many' ])
-
-			await this.formFieldRepository.delete({
-				formId: id,
-			});
-
-			const output = [];
-			let i = 0,
-				ii = 0;
-
-			while (i < data.length) {
-				const formField = await this.formFieldRepository.save({
-					...data[i],
-					id: data[i]['id'] || uuidv4(),
-					formId: id,
-				});
-
-				output.push(formField);
-				i++;
-			}
-			await queryRunner.commitTransaction();
-			
-			return output;
-		}
-		catch (err) {
-			await queryRunner.rollbackTransaction();
-			await queryRunner.release();
-
-			throw new ErrorException(err.message, getCurrentLine(), { user, id, data });
-		}
-		finally {
-			await queryRunner.release();
-		}
-	}
-
 	async update({ user, ...payload }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'form', 'many' ]);
-			await this.cacheService.clear([ 'form', 'one' ]);
+			
+			this.cacheService.clear([ 'form', 'many' ]);
+			this.cacheService.clear([ 'form', 'one' ]);
 			
 			await this.updateWithId(this.formRepository, payload);
 			

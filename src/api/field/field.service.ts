@@ -62,12 +62,8 @@ export class FieldService extends SqlService {
 			}
 			const output = await this.fieldRepository.findAndCount(await this.findMany(payload));
 
-			if (output) {
-				await this.cacheService.set([ 'field', 'many', payload ], output);
-			}
-			if (!output) {
-				return new NotFoundException('Entity is undefined', getCurrentLine(), { user, ...payload });
-			}
+			await this.cacheService.set([ 'field', 'many', payload ], output);
+			
 			return output;
 		}
 		catch (err) {
@@ -84,9 +80,13 @@ export class FieldService extends SqlService {
 				return cachedData;
 			}
 			const output = await this.fieldRepository.findOne(await this.findOne(payload));
-		
-			await this.cacheService.set([ 'field', 'one', payload ], output);
-
+			
+			if (output) {
+				await this.cacheService.set([ 'field', 'one', payload ], output);
+			}
+			if (!output) {
+				return new NotFoundException('Entity is undefined', getCurrentLine(), { user, ...payload });
+			}
 			return output;
 		}
 		catch (err) {
