@@ -74,7 +74,7 @@ export class FormFieldService extends SqlService {
 			if (output) {
 				this.cacheService.set([ 'form', 'field', 'one', payload ], output);
 			}
-			else (!output) {
+			else {
 				return new NotFoundException('Entity is undefined', getCurrentLine(), { user, ...payload });
 			}
 			return output;

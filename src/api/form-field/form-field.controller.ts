@@ -19,7 +19,7 @@ export class FormFieldController {
 	@MessagePattern({ cmd: 'formField.many' })
 	async many(payload) {
 		try {
-			const many = await this formFieldService.many({
+			const many = await this.formFieldService.many({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_MANY'] ],
 					isRequired: true,
@@ -60,7 +60,7 @@ export class FormFieldController {
 	@MessagePattern({ cmd: 'formField.one' })
 	async one(payload) {
 		try {
-			const output = await this formFieldService.one({
+			const output = await this.formFieldService.one({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_ONE'] ],
 					isRequired: true,
@@ -87,7 +87,7 @@ export class FormFieldController {
 	@EventPattern('formField.drop')
 	async drop(payload) {
 		try {
-			await this formFieldService.drop({
+			await this.formFieldService.drop({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_DROP'] ],
 					isRequired: true,
@@ -111,7 +111,7 @@ export class FormFieldController {
 	@EventPattern('formField.dropMany')
 	async dropMany(payload) {
 		try {
-			await this formFieldService.dropMany({
+			await this.formFieldService.dropMany({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_DROP_MANY'] ],
 					isRequired: true,
