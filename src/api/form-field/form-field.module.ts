@@ -6,10 +6,10 @@ import {
 } from 'nest-datum/balancer/src';
 import { CacheService } from 'nest-datum/cache/src';
 import { FormField } from './form-field.entity';
-import { Form } from '../form/form.entity';
-import { Field } from '../field/field.entity';
 import { FormFieldController } from './form-field.controller';
 import { FormFieldService } from './form-field.service';
+import { Form } from '../form/form.entity';
+import { Field } from '../field/field.entity';
 
 @Module({
 	controllers: [ FormFieldController ],
