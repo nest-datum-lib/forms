@@ -136,23 +136,13 @@ export class FormFieldController {
 	@EventPattern('formField.create')
 	async create(payload) {
 		try {
-			console.log('111', payload);
-			console.log('2222', {
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				data: Validators.arr('data', payload['data']),
-			});
-
 			const output = await this.formFieldService.create({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
 					isRequired: true,
 				}),
-				id: Validators.id('id', payload['id']),
-				data: Validators.arr('data', payload['data']),
+				formId: Validators.id('formId', payload['formId']),
+				fieldId: Validators.id('fieldId', payload['fieldId']),
 			});
 
 			this.balancerService.decrementServiceResponseLoadingIndicator();

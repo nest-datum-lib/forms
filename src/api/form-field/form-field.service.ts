@@ -130,53 +130,29 @@ export class FormFieldService extends SqlService {
 		}
 	}
 
-	async create({ user, id, data }): Promise<any> {
+	async create({ user, id, formId, fieldId }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
-			console.log('3333', user, id, data);
-
-			if (!Array.isArray(data)) {
-				throw new Error('"data" prtoperty is not array.');
-			}
-
 			await queryRunner.startTransaction();
 
-			console.log('4444');
-			
 			this.cacheService.clear([ 'form', 'field', 'many' ]);
 			this.cacheService.clear([ 'form', 'many' ]);
 			this.cacheService.clear([ 'field', 'many' ]);
 
-			console.log('555');
-
-			await this.formFieldRepository.delete({
-				formId: id,
+			const formField = await this.formFieldRepository.save({
+				id: id || uuidv4(),
+				userId: (user
+					&& typeof user === 'object')
+					? (user['id'] || '')
+					: '',
+				formId,
+				fieldId,
 			});
 
-			console.log('666');
-
-			const output = [];
-			let i = 0,
-				ii = 0;
-
-			while (i < data.length) {
-				const formField = await this.formFieldRepository.save({
-					...data[i],
-					id: data[i]['id'] || uuidv4(),
-					formId: id,
-				});
-
-				console.log('=======', formField);
-
-				output.push(formField);
-				i++;
-			}
 			await queryRunner.commitTransaction();
-			
-			console.log('777', output);
 
-			return output;
+			return formField;
 		}
 		catch (err) {
 			console.log('errr', err);
