@@ -86,16 +86,10 @@ export class FormFieldService extends SqlService {
 
 	async drop({ user, ...payload }): Promise<any> {
 		try {
-			console.log('33333', payload);
-
 			this.cacheService.clear([ 'form', 'field', 'many' ]);
 			this.cacheService.clear([ 'form', 'field', 'one', payload ]);
 
-			console.log('444444');
-
-			await this.dropByIsDeleted(this.formFieldRepository, payload['id']);
-
-			console.log('555555');
+			await this.formFieldRepository.delete({ id: payload['id'] });
 
 			return true;
 		}

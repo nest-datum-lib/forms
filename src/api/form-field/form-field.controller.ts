@@ -87,8 +87,6 @@ export class FormFieldController {
 	@EventPattern('formField.drop')
 	async drop(payload) {
 		try {
-			console.log('1111111');
-			console.log('22222', payload);
 			await this.formFieldService.drop({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_DROP'] ],
@@ -103,8 +101,6 @@ export class FormFieldController {
 			return true;
 		}
 		catch (err) {
-			console.log('errr', err);
-
 			this.balancerService.log(err);
 			this.balancerService.decrementServiceResponseLoadingIndicator();
 
