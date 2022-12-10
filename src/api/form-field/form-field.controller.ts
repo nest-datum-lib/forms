@@ -141,8 +141,13 @@ export class FormFieldController {
 					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
 					isRequired: true,
 				}),
-				formId: Validators.id('formId', payload['formId']),
-				fieldId: Validators.id('fieldId', payload['fieldId']),
+				id: Validators.id('id', payload['id']),
+				formId: Validators.id('formId', payload['formId'], {
+					isRequired: true,
+				}),
+				fieldId: Validators.id('fieldId', payload['fieldId'], {
+					isRequired: true,
+				}),
 			});
 
 			this.balancerService.decrementServiceResponseLoadingIndicator();
