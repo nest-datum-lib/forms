@@ -140,15 +140,18 @@ export class FormFieldService extends SqlService {
 			this.cacheService.clear([ 'form', 'many' ]);
 			this.cacheService.clear([ 'field', 'many' ]);
 
+			const userId = (user
+				&& typeof user === 'object')
+				? (user['id'] || '')
+				: '';
 			const formField = await this.formFieldRepository.save({
 				id: id || uuidv4(),
-				userId: (user
-					&& typeof user === 'object')
-					? (user['id'] || '')
-					: '',
+				userId,
 				formId,
 				fieldId,
 			});
+			
+			formField['userId'] = userId;
 
 			await queryRunner.commitTransaction();
 

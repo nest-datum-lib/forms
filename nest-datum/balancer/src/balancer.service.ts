@@ -59,7 +59,7 @@ export class BalancerService {
 						}
 						else if (index >= transporterAttemptsNum) {
 							clearInterval(interval);
-							reject(new Error('Service is unavailable'));
+							reject(new Error('Service is unavailable', replicaId));
 							return;
 						}
 						index += 1;
