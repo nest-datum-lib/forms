@@ -134,19 +134,27 @@ export class FormFieldService extends SqlService {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
+			console.log('3333', user, id, data);
+
 			if (!Array.isArray(data)) {
 				throw new Error('"data" prtoperty is not array.');
 			}
 
 			await queryRunner.startTransaction();
+
+			console.log('4444');
 			
 			this.cacheService.clear([ 'form', 'field', 'many' ]);
 			this.cacheService.clear([ 'form', 'many' ]);
 			this.cacheService.clear([ 'field', 'many' ]);
 
+			console.log('555');
+
 			await this.formFieldRepository.delete({
 				formId: id,
 			});
+
+			console.log('666');
 
 			const output = [];
 			let i = 0,
@@ -159,14 +167,20 @@ export class FormFieldService extends SqlService {
 					formId: id,
 				});
 
+				console.log('=======', formField);
+
 				output.push(formField);
 				i++;
 			}
 			await queryRunner.commitTransaction();
 			
+			console.log('777', output);
+
 			return output;
 		}
 		catch (err) {
+			console.log('errr', err);
+
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 
