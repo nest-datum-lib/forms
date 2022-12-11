@@ -22,7 +22,7 @@ import { Field } from '../field/field.entity';
 			Field, 
 		]),
 	],
-	Fields: [
+	providers: [
 		BalancerRepository, 
 		BalancerService,
 		CacheService,
