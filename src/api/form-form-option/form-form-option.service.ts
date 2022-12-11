@@ -136,8 +136,6 @@ export class FormFormOptionService extends SqlService {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
-			console.log('user, id, formId, formOptionId', user, id, formId, formOptionId);
-
 			await queryRunner.startTransaction();
 
 			this.cacheService.clear([ 'form', 'option', 'relation', 'many' ]);
@@ -150,14 +148,12 @@ export class FormFormOptionService extends SqlService {
 				&& typeof user === 'object')
 				? (user['id'] || '')
 				: '';
-			console.log('userId', userId);
 			const formOptionRelation = await this.formFormOptionRepository.save({
 				id: id || uuidv4(),
 				userId,
 				formId,
 				formOptionId,
 			});
-			console.log('formOptionRelation', formOptionRelation);
 			
 			formOptionRelation['userId'] = userId;
 

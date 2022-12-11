@@ -136,9 +136,6 @@ export class FormFormOptionController {
 	@EventPattern('formOptionRelation.create')
 	async create(payload) {
 		try {
-			console.log('111111');
-			console.log('payload', payload);
-
 			const output = await this.formFormOptionService.create({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FORM_OPTION_RELATION_CREATE'] ],
