@@ -96,8 +96,8 @@ export class FieldService extends SqlService {
 
 	async drop({ user, ...payload }): Promise<any> {
 		try {
-			await this.cacheService.clear([ 'field', 'many' ]);
-			await this.cacheService.clear([ 'field', 'one', payload ]);
+			this.cacheService.clear([ 'field', 'many' ]);
+			this.cacheService.clear([ 'field', 'one', payload ]);
 
 			await this.fieldFieldFieldOptionRepository.delete({ fieldId: payload['id'] });
 			await this.fieldFieldOptionRepository.delete({ fieldId: payload['id'] });
@@ -115,8 +115,9 @@ export class FieldService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'field', 'many' ]);
-			await this.cacheService.clear([ 'field', 'one', payload ]);
+			
+			this.cacheService.clear([ 'field', 'many' ]);
+			this.cacheService.clear([ 'field', 'one', payload ]);
 
 			let i = 0;
 
@@ -146,7 +147,8 @@ export class FieldService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'field', 'many' ]);
+			
+			this.cacheService.clear([ 'field', 'many' ]);
 
 			const output = await this.fieldRepository.save({
 				...payload,
@@ -168,13 +170,69 @@ export class FieldService extends SqlService {
 		}
 	}
 
+	async createOptions({ user, id, data }): Promise<any> {
+		const queryRunner = await this.connection.createQueryRunner();
+
+		try {
+			await queryRunner.startTransaction();
+			
+			this.cacheService.clear([ 'field', 'option', 'many' ]);
+			this.cacheService.clear([ 'field', 'many' ]);
+			this.cacheService.clear([ 'field', 'one' ]);
+
+			await this.fieldFieldFieldOptionRepository.delete({
+				fieldId: id,
+			});
+
+			let i = 0,
+				ii = 0;
+
+			while (i < data.length) {
+				ii = 0;
+
+				const option = data[i];
+
+				while (ii < option.length) {
+					const {
+						entityOptionId,
+						entityId,
+						id: itemId,
+						...optionData
+					} = option[ii];
+
+					const output = await this.fieldFieldFieldOptionRepository.save({
+						...optionData,
+						fieldId: id,
+						fieldFieldOptionId: entityOptionId,
+					});
+
+					ii++;
+				}
+				i++;
+			}
+			await queryRunner.commitTransaction();
+			
+			return true;
+		}
+		catch (err) {
+			await queryRunner.rollbackTransaction();
+			await queryRunner.release();
+
+			throw new ErrorException(err.message, getCurrentLine(), { user, id, data });
+		}
+		finally {
+			await queryRunner.release();
+		}
+	}
+
 	async update({ user, ...payload }): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'field', 'many' ]);
-			await this.cacheService.clear([ 'field', 'one' ]);
+			
+			this.cacheService.clear([ 'field', 'many' ]);
+			this.cacheService.clear([ 'field', 'one' ]);
 			
 			await this.updateWithId(this.fieldRepository, payload);
 			

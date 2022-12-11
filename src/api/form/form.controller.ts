@@ -170,6 +170,32 @@ export class FormController {
 		}
 	}
 
+	@EventPattern('form.createOptions')
+	async createOptions(payload) {
+		try {
+			const output = await this.formService.createOptions({
+				user: Validators.token('accessToken', payload['accessToken'], {
+					accesses: [ process['ACCESS_FORMS_FORM_CREATE_OPTIONS'] ],
+					isRequired: true,
+				}),
+				id: Validators.id('id', payload['id']),
+				data: Validators.arr('data', payload['data'], {
+					isRequired: true,
+				}),
+			});
+
+			this.balancerService.decrementServiceResponseLoadingIndicator();
+
+			return output;
+		}
+		catch (err) {
+			this.balancerService.log(err);
+			this.balancerService.decrementServiceResponseLoadingIndicator();
+
+			return err;
+		}
+	}
+
 	@EventPattern('form.update')
 	async update(payload) {
 		try {

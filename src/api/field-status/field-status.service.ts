@@ -90,8 +90,8 @@ export class FieldStatusService extends SqlService {
 
 	async drop({ user, ...payload }): Promise<any> {
 		try {
-			await this.cacheService.clear([ 'field', 'status', 'many' ]);
-			await this.cacheService.clear([ 'field', 'status', 'one', payload ]);
+			this.cacheService.clear([ 'field', 'status', 'many' ]);
+			this.cacheService.clear([ 'field', 'status', 'one', payload ]);
 
 			await this.dropByIsDeleted(this.fieldStatusRepository, payload['id']);
 			
@@ -107,8 +107,9 @@ export class FieldStatusService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'field', 'status', 'many' ]);
-			await this.cacheService.clear([ 'field', 'status', 'one', payload ]);
+			
+			this.cacheService.clear([ 'field', 'status', 'many' ]);
+			this.cacheService.clear([ 'field', 'status', 'one', payload ]);
 
 			let i = 0;
 
@@ -136,7 +137,8 @@ export class FieldStatusService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'field', 'status', 'many' ]);
+			
+			this.cacheService.clear([ 'field', 'status', 'many' ]);
 
 			const output = await this.fieldStatusRepository.save({
 				...payload,
@@ -163,8 +165,9 @@ export class FieldStatusService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'field', 'status', 'many' ]);
-			await this.cacheService.clear([ 'field', 'status', 'one' ]);
+			
+			this.cacheService.clear([ 'field', 'status', 'many' ]);
+			this.cacheService.clear([ 'field', 'status', 'one' ]);
 			
 			await this.updateWithId(this.fieldStatusRepository, payload);
 			

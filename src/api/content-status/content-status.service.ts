@@ -90,8 +90,8 @@ export class ContentStatusService extends SqlService {
 
 	async drop({ user, ...payload }): Promise<any> {
 		try {
-			await this.cacheService.clear([ 'content', 'status', 'many' ]);
-			await this.cacheService.clear([ 'content', 'status', 'one', payload ]);
+			this.cacheService.clear([ 'content', 'status', 'many' ]);
+			this.cacheService.clear([ 'content', 'status', 'one', payload ]);
 
 			await this.dropByIsDeleted(this.contentStatusRepository, payload['id']);
 			
@@ -107,8 +107,9 @@ export class ContentStatusService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'content', 'status', 'many' ]);
-			await this.cacheService.clear([ 'content', 'status', 'one', payload ]);
+			
+			this.cacheService.clear([ 'content', 'status', 'many' ]);
+			this.cacheService.clear([ 'content', 'status', 'one', payload ]);
 
 			let i = 0;
 
@@ -136,7 +137,8 @@ export class ContentStatusService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'content', 'status', 'many' ]);
+			
+			this.cacheService.clear([ 'content', 'status', 'many' ]);
 
 			const output = await this.contentStatusRepository.save({
 				...payload,
@@ -163,8 +165,9 @@ export class ContentStatusService extends SqlService {
 
 		try {
 			await queryRunner.startTransaction();
-			await this.cacheService.clear([ 'content', 'status', 'many' ]);
-			await this.cacheService.clear([ 'content', 'status', 'one' ]);
+			
+			this.cacheService.clear([ 'content', 'status', 'many' ]);
+			this.cacheService.clear([ 'content', 'status', 'one' ]);
 			
 			await this.updateWithId(this.contentStatusRepository, payload);
 			
