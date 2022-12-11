@@ -6,22 +6,22 @@ import {
 } from '@nestjs/microservices';
 import { BalancerService } from 'nest-datum/balancer/src';
 import * as Validators from 'nest-datum/validators/src';
-import { FormFieldService } from './form-field.service';
+import { FormFormOptionService } from './form-form-option.service';
 
 @Controller()
-export class FormFieldController {
+export class FormFormOptionController {
 	constructor(
-		private readonly formFieldService: FormFieldService,
+		private readonly formFormOptionService: FormFormOptionService,
 		private readonly balancerService: BalancerService,
 	) {
 	}
 
-	@MessagePattern({ cmd: 'formField.many' })
+	@MessagePattern({ cmd: 'formOptionRelation.many' })
 	async many(payload) {
 		try {
-			const many = await this.formFieldService.many({
+			const many = await this.formFormOptionService.many({
 				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_MANY'] ],
+					accesses: [ process['ACCESS_FORMS_FORM_OPTION_RELATION_MANY'] ],
 					isRequired: true,
 				}),
 				relations: Validators.obj('relations', payload['relations']),
@@ -57,12 +57,12 @@ export class FormFieldController {
 		}
 	}
 
-	@MessagePattern({ cmd: 'formField.one' })
+	@MessagePattern({ cmd: 'formOptionRelation.one' })
 	async one(payload) {
 		try {
-			const output = await this.formFieldService.one({
+			const output = await this.formFormOptionService.one({
 				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_ONE'] ],
+					accesses: [ process['ACCESS_FORMS_FORM_OPTION_RELATION_ONE'] ],
 					isRequired: true,
 				}),
 				relations: Validators.obj('relations', payload['relations']),
@@ -84,12 +84,12 @@ export class FormFieldController {
 		}
 	}
 
-	@EventPattern('formField.drop')
+	@EventPattern('formOptionRelation.drop')
 	async drop(payload) {
 		try {
-			await this.formFieldService.drop({
+			await this.formFormOptionService.drop({
 				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_DROP'] ],
+					accesses: [ process['ACCESS_FORMS_FORM_OPTION_RELATION_DROP'] ],
 					isRequired: true,
 				}),
 				id: Validators.id('id', payload['id'], {
@@ -108,12 +108,12 @@ export class FormFieldController {
 		}
 	}
 
-	@EventPattern('formField.dropMany')
+	@EventPattern('formOptionRelation.dropMany')
 	async dropMany(payload) {
 		try {
-			await this.formFieldService.dropMany({
+			await this.formFormOptionService.dropMany({
 				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_DROP_MANY'] ],
+					accesses: [ process['ACCESS_FORMS_FORM_OPTION_RELATION_DROP_MANY'] ],
 					isRequired: true,
 				}),
 				ids: Validators.arr('ids', payload['ids'], {
@@ -133,19 +133,19 @@ export class FormFieldController {
 		}
 	}
 
-	@EventPattern('formField.create')
+	@EventPattern('formOptionRelation.create')
 	async create(payload) {
 		try {
-			const output = await this.formFieldService.create({
+			const output = await this.formFormOptionService.create({
 				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
+					accesses: [ process['ACCESS_FORMS_FORM_OPTION_RELATION_CREATE'] ],
 					isRequired: true,
 				}),
 				id: Validators.id('id', payload['id']),
 				formId: Validators.id('formId', payload['formId'], {
 					isRequired: true,
 				}),
-				fieldId: Validators.id('fieldId', payload['fieldId'], {
+				formOptionId: Validators.id('formOptionId', payload['formOptionId'], {
 					isRequired: true,
 				}),
 			});

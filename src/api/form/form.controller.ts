@@ -133,30 +133,6 @@ export class FormController {
 		}
 	}
 
-	@EventPattern('form.dropOption')
-	async dropOption(payload) {
-		try {
-			await this.formService.dropOption({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_DROP_OPTION'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id'], {
-					isRequired: true,
-				}),
-			});
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
 	@EventPattern('form.create')
 	async create(payload) {
 		try {
@@ -180,59 +156,6 @@ export class FormController {
 					max: 255,
 				}),
 				isNotDelete: Validators.bool('isNotDelete', payload['isNotDelete']),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
-	@EventPattern('form.createOption')
-	async createOption(payload) {
-		try {
-			const output = await this.formService.createOption({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE_OPTION'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				optionId: Validators.id('optionId', payload['optionId'], {
-					isRequired: true,
-				}),
-				data: Validators.arr('data', payload['data']) || {},
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
-	@EventPattern('form.createOptions')
-	async createOptions(payload) {
-		try {
-			const output = await this.formService.createOptions({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE_OPTIONS'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				data: Validators.arr('data', payload['data'], {
-					isRequired: true,
-				}),
 			});
 
 			this.balancerService.decrementServiceResponseLoadingIndicator();

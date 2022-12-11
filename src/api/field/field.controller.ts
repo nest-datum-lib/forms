@@ -133,30 +133,6 @@ export class FieldController {
 		}
 	}
 
-	@EventPattern('field.dropOption')
-	async dropOption(payload) {
-		try {
-			await this.fieldService.dropOption({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_DROP_OPTION'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id'], {
-					isRequired: true,
-				}),
-			});
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
 	@EventPattern('field.create')
 	async create(payload) {
 		try {
@@ -182,59 +158,6 @@ export class FieldController {
 				}),
 				isRequired: Validators.bool('isRequired', payload['isRequired']),
 				isNotDelete: Validators.bool('isNotDelete', payload['isNotDelete']),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
-	@EventPattern('field.createOption')
-	async createOption(payload) {
-		try {
-			const output = await this.fieldService.createOption({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CREATE_OPTION'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				optionId: Validators.id('optionId', payload['optionId'], {
-					isRequired: true,
-				}),
-				data: Validators.arr('data', payload['data']) || {},
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
-	}
-
-	@EventPattern('field.createOptions')
-	async createOptions(payload) {
-		try {
-			const output = await this.fieldService.createOptions({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CREATE_OPTIONS'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				data: Validators.arr('data', payload['data'], {
-					isRequired: true,
-				}),
 			});
 
 			this.balancerService.decrementServiceResponseLoadingIndicator();
