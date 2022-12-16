@@ -33,9 +33,6 @@ export class FieldContent {
 	@Column('text')
 	public value: string;
 
-	@Column('boolean', { default: false })
-	public isDeleted: boolean = false;
-
 	@CreateDateColumn({ 
 		type: 'timestamp', 
 		precision: null,

@@ -35,7 +35,6 @@ export class FieldContentService extends SqlService {
 		fieldId: true,
 		contentId: true,
 		value: true,
-		isDeleted: true,
 		createdAt: true,
 		updatedAt: true,
 	};
@@ -92,7 +91,7 @@ export class FieldContentService extends SqlService {
 			this.cacheService.clear([ 'field', 'content', 'many' ]);
 			this.cacheService.clear([ 'field', 'content', 'one', payload ]);
 
-			await this.dropByIsDeleted(this.fieldContentRepository, payload['id']);
+			await this.fieldContentRepository.delete({ id: payload['id'] });
 
 			return true;
 		}
@@ -113,7 +112,7 @@ export class FieldContentService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.dropByIsDeleted(this.fieldContentRepository, payload['ids'][i]);
+				await this.fieldContentRepository.delete({ id: payload['ids'][i] });
 				i++;
 			}
 			await queryRunner.commitTransaction();
