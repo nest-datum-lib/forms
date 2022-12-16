@@ -60,7 +60,11 @@ export class FieldService extends SqlService {
 			if (cachedData) {
 				return cachedData;
 			}
-			payload['filter'] = JSON.parse('{"name":["$Like","summary","projects","name","skills","profiles","technology","email","experience","education"]}');
+			// payload['filter'] = JSON.parse('{"name":["$Like","summary","projects","name","skills","profiles","technology","email","experience","education"]}');
+
+			// payload['filter'] = {
+			// 	name: 
+			// };
 
 			console.log('await this.findMany(payload)', await this.findMany(payload));
 
