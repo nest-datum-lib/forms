@@ -143,12 +143,11 @@ export class FieldContentController {
 				}),
 				id: Validators.id('id', payload['id']),
 				userId: Validators.id('userId', payload['userId']),
-				fieldId: Validators.id('fieldId', payload['fieldId'], {
-					isRequired: true,
-				}),
 				contentId: Validators.id('contentId', payload['contentId'], {
 					isRequired: true,
 				}),
+				fieldId: Validators.id('fieldId', payload['fieldId']),
+				fieldName: Validators.id('fieldName', payload['fieldName']),
 				value: Validators.str('value', payload['value']),
 			});
 
