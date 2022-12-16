@@ -10,6 +10,7 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { 
 	Repository,
 	Connection, 
+	Like,
 } from 'typeorm';
 import { SqlService } from 'nest-datum/sql/src';
 import { CacheService } from 'nest-datum/cache/src';
@@ -159,6 +160,11 @@ export class FieldContentService extends SqlService {
 					return new NotFoundException('Content entity is undefined', getCurrentLine(), { user, ...payload });
 				}
 				let field = await this.fieldRepository.findOne({
+					select: {
+						id: true,
+						formId: true,
+						name: true,
+					},
 					where: {
 						formId: content['formId'],
 						name: Like(`%${payload['fieldName']}%`),
