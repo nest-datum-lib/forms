@@ -170,6 +170,9 @@ export class FieldContentService extends SqlService {
 							formId: content['formId'],
 						},
 					},
+					relations: {
+						formFields: true,
+					},
 				});
 
 				console.log('formFields', field['formFields']);
