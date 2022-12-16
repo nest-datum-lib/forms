@@ -172,20 +172,22 @@ export class FieldContentService extends SqlService {
 					},
 				});
 
-				if (!field) {
-					field = await this.fieldRepository.save({
-						userId: payload['userId'] || user['id'] || '',
-						fieldStatusId: 'forms-field-status-active',
-						dataTypeId: 'data-type-type-text',
-						name: payload['fieldName'],
-						description: 'Automatically created field by CV parser.',
-					});
-				}
-				if (!field) {
-					return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
-				}
-				delete payload['fieldName'];
-				payload['fieldId'] = field['id'];
+				console.log('formFields', field);
+
+				// if (!field) {
+				// 	field = await this.fieldRepository.save({
+				// 		userId: payload['userId'] || user['id'] || '',
+				// 		fieldStatusId: 'forms-field-status-active',
+				// 		dataTypeId: 'data-type-type-text',
+				// 		name: payload['fieldName'],
+				// 		description: 'Automatically created field by CV parser.',
+				// 	});
+				// }
+				// if (!field) {
+				// 	return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
+				// }
+				// delete payload['fieldName'];
+				// payload['fieldId'] = field['id'];
 			}
 			const output = await this.fieldContentRepository.save({
 				...payload,
