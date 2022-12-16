@@ -60,7 +60,7 @@ export class FieldService extends SqlService {
 			if (cachedData) {
 				return cachedData;
 			}
-			payload['filter'] = JSON.parse('{"name":["$Like","summary"]}');
+			payload['filter'] = JSON.parse('{"name":["$Like","summary","projects"]}');
 			payload['page'] = 1;
 			payload['limit'] = 10;
 
