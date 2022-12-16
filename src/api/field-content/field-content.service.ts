@@ -162,12 +162,13 @@ export class FieldContentService extends SqlService {
 				let field = await this.fieldRepository.findOne({
 					select: {
 						id: true,
-						formId: true,
 						name: true,
 					},
 					where: {
-						formId: content['formId'],
 						name: Like(`%${payload['fieldName']}%`),
+						formFields: {
+							formId: content['formId'],
+						},
 					},
 				});
 
