@@ -20,6 +20,7 @@ import {
 } from 'nest-datum/exceptions/src';
 import { Content } from '../content/content.entity';
 import { Field } from '../field/field.entity';
+import { FormField } from '../form-field/form-field.entity';
 import { FieldContent } from './field-content.entity';
 
 @Injectable()
@@ -28,6 +29,7 @@ export class FieldContentService extends SqlService {
 		@InjectRepository(FieldContent) private readonly fieldContentRepository: Repository<FieldContent>,
 		@InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
 		@InjectRepository(Content) private readonly contentRepository: Repository<Content>,
+		@InjectRepository(FormField) private readonly formFieldRepository: Repository<FormField>,
 		private readonly connection: Connection,
 		private readonly cacheService: CacheService,
 	) {
@@ -170,27 +172,26 @@ export class FieldContentService extends SqlService {
 							formId: content['formId'],
 						},
 					},
-					relations: {
-						formFields: true,
-					},
 				});
-
-				console.log('formFields', field['formFields']);
-
-				// if (!field) {
-				// 	field = await this.fieldRepository.save({
-				// 		userId: payload['userId'] || user['id'] || '',
-				// 		fieldStatusId: 'forms-field-status-active',
-				// 		dataTypeId: 'data-type-type-text',
-				// 		name: payload['fieldName'],
-				// 		description: 'Automatically created field by CV parser.',
-				// 	});
-				// }
-				// if (!field) {
-				// 	return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
-				// }
-				// delete payload['fieldName'];
-				// payload['fieldId'] = field['id'];
+				if (!field) {
+					field = await this.fieldRepository.save({
+						userId: payload['userId'] || user['id'] || '',
+						fieldStatusId: 'forms-field-status-active',
+						dataTypeId: 'data-type-type-text',
+						name: payload['fieldName'],
+						description: 'Automatically created field by CV parser.',
+					});
+				}
+				if (!field) {
+					return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
+				}
+				await this.formFieldRepository.save({
+					userId: payload['userId'] || user['id'] || '',
+					formId: content['formId'],
+					fieldId: field['id'],
+				});
+				delete payload['fieldName'];
+				payload['fieldId'] = field['id'];
 			}
 			const output = await this.fieldContentRepository.save({
 				...payload,
