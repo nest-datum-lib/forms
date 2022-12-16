@@ -60,6 +60,8 @@ export class FieldService extends SqlService {
 			if (cachedData) {
 				return cachedData;
 			}
+			payload['filter'] = '{"name":["$Like","summary","projects","name","skills","profiles","technology","email","experience","education"]}';
+
 			console.log('await this.findMany(payload)', await this.findMany(payload));
 
 			const output = await this.fieldRepository.findAndCount(await this.findMany(payload));
