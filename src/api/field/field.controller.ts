@@ -19,6 +19,8 @@ export class FieldController {
 	@MessagePattern({ cmd: 'field.many' })
 	async many(payload) {
 		try {
+			console.log('many');
+
 			const many = await this.fieldService.many({
 				user: Validators.token('accessToken', payload['accessToken'], {
 					accesses: [ process['ACCESS_FORMS_FIELD_MANY'] ],

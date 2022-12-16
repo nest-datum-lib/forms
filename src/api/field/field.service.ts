@@ -64,7 +64,7 @@ export class FieldService extends SqlService {
 			payload['page'] = 1;
 			payload['limit'] = 10;
 
-			console.log('await this.findMany(payload)', await this.findMany(payload));
+			console.log('await this.findMany(payload)1', await this.findMany(payload));
 
 			const output = await this.fieldRepository.findAndCount(await this.findMany(payload));
 
