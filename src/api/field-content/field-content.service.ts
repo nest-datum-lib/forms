@@ -17,12 +17,16 @@ import {
 	ErrorException,
 	NotFoundException, 
 } from 'nest-datum/exceptions/src';
+import { Content } from '../content/content.entity';
+import { Field } from '../field/field.entity';
 import { FieldContent } from './field-content.entity';
 
 @Injectable()
 export class FieldContentService extends SqlService {
 	constructor(
 		@InjectRepository(FieldContent) private readonly fieldContentRepository: Repository<FieldContent>,
+		@InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
+		@InjectRepository(Content) private readonly contentRepository: Repository<Content>,
 		private readonly connection: Connection,
 		private readonly cacheService: CacheService,
 	) {
@@ -138,6 +142,44 @@ export class FieldContentService extends SqlService {
 			
 			this.cacheService.clear([ 'field', 'content', 'many' ]);
 
+			if (!payload['fieldId']
+				&& payload['fieldName']
+				&& typeof payload['fieldName'] === 'string') {
+				const content = await this.contentRepository.findOne({
+					select: {
+						id: true,
+						formId: true,
+					},
+					where: {
+						id: payload['contentId'],
+					},
+				});
+
+				if (!content) {
+					return new NotFoundException('Content entity is undefined', getCurrentLine(), { user, ...payload });
+				}
+				let field = await this.fieldRepository.findOne({
+					where: {
+						formId: content['formId'],
+						name: Like(`%${payload['fieldName']}%`),
+					},
+				});
+
+				if (!field) {
+					field = await this.fieldRepository.save({
+						userId: payload['userId'] || user['id'] || '',
+						fieldStatusId: 'forms-field-status-active',
+						dataTypeId: 'data-type-type-text',
+						name: payload['fieldName'],
+						description: 'Automatically created field by CV parser.',
+					});
+				}
+				if (!field) {
+					return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
+				}
+				delete payload['fieldName'];
+				payload['fieldId'] = field['id'];
+			}
 			const output = await this.fieldContentRepository.save({
 				...payload,
 				userId: payload['userId'] || user['id'] || '',
