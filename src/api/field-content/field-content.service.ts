@@ -172,7 +172,7 @@ export class FieldContentService extends SqlService {
 					},
 				});
 
-				console.log('formFields', field);
+				console.log('formFields', field['formFields']);
 
 				// if (!field) {
 				// 	field = await this.fieldRepository.save({
