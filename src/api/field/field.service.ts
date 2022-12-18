@@ -20,6 +20,7 @@ import {
 import { Field } from './field.entity';
 import { FieldFieldOption } from '../field-field-option/field-field-option.entity';
 import { FieldFieldFieldOption } from '../field-field-field-option/field-field-field-option.entity';
+import { FormField } from '../form-field/form-field.entity';
 
 @Injectable()
 export class FieldService extends SqlService {
@@ -27,6 +28,7 @@ export class FieldService extends SqlService {
 		@InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
 		@InjectRepository(FieldFieldOption) private readonly fieldFieldOptionRepository: Repository<FieldFieldOption>,
 		@InjectRepository(FieldFieldFieldOption) private readonly fieldFieldFieldOptionRepository: Repository<FieldFieldFieldOption>,
+		@InjectRepository(FormField) private readonly formFieldRepository: Repository<FormField>,
 		private readonly connection: Connection,
 		private readonly cacheService: CacheService,
 	) {
@@ -107,6 +109,7 @@ export class FieldService extends SqlService {
 
 			await this.fieldFieldFieldOptionRepository.delete({ fieldId: payload['id'] });
 			await this.fieldFieldOptionRepository.delete({ fieldId: payload['id'] });
+			await this.formFieldRepository.delete({ fieldId: payload['id'] });
 			await this.dropByIsDeleted(this.fieldRepository, payload['id']);
 
 			return true;
