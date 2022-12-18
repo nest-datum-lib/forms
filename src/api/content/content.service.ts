@@ -17,12 +17,14 @@ import {
 	ErrorException,
 	NotFoundException, 
 } from 'nest-datum/exceptions/src';
+import { FieldContent } from '../field-content/field-content.entity';
 import { Content } from './content.entity';
 
 @Injectable()
 export class ContentService extends SqlService {
 	constructor(
 		@InjectRepository(Content) private readonly contentRepository: Repository<Content>,
+		@InjectRepository(FieldContent) private readonly fieldContentRepository: Repository<FieldContent>,
 		private readonly connection: Connection,
 		private readonly cacheService: CacheService,
 	) {
@@ -91,7 +93,9 @@ export class ContentService extends SqlService {
 			this.cacheService.clear([ 'content', 'many' ]);
 			this.cacheService.clear([ 'content', 'one', payload ]);
 
-			await this.dropByIsDeleted(this.contentRepository, payload['id']);
+			await this.dropByIsDeleted(this.contentRepository, payload['id'], async (entity) => {
+				await this.fieldContentRepository.delete({ contentId: entity['id'] });
+			});
 
 			return true;
 		}
@@ -112,7 +116,9 @@ export class ContentService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.dropByIsDeleted(this.contentRepository, payload['ids'][i]);
+				await this.dropByIsDeleted(this.contentRepository, payload['ids'][i], async (entity) => {
+					await this.fieldContentRepository.delete({ contentId: entity['id'] });
+				});
 				i++;
 			}
 			await queryRunner.commitTransaction();

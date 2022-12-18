@@ -5,6 +5,7 @@ import {
 	BalancerService, 
 } from 'nest-datum/balancer/src';
 import { CacheService } from 'nest-datum/cache/src';
+import { FieldContent } from '../field-content/field-content.entity';
 import { Form } from '../form/form.entity';
 import { ContentStatus } from '../content-status/content-status.entity';
 import { Content } from './content.entity';
@@ -15,6 +16,7 @@ import { ContentService } from './content.service';
 	controllers: [ ContentController ],
 	imports: [
 		TypeOrmModule.forFeature([ 
+			FieldContent,
 			Form,
 			ContentStatus,
 			Content, 
