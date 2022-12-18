@@ -181,15 +181,16 @@ export class FieldContentService extends SqlService {
 						name: payload['fieldName'],
 						description: 'Automatically created field by CV parser.',
 					});
+
+					if (!field) {
+						return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
+					}
+					await this.formFieldRepository.save({
+						userId: payload['userId'] || user['id'] || '',
+						formId: content['formId'],
+						fieldId: field['id'],
+					});
 				}
-				if (!field) {
-					return new NotFoundException('Field entity is undefined', getCurrentLine(), { user, ...payload });
-				}
-				await this.formFieldRepository.save({
-					userId: payload['userId'] || user['id'] || '',
-					formId: content['formId'],
-					fieldId: field['id'],
-				});
 				delete payload['fieldName'];
 				payload['fieldId'] = field['id'];
 			}
