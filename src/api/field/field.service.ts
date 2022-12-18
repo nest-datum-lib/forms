@@ -64,10 +64,6 @@ export class FieldService extends SqlService {
 			if (cachedData) {
 				return cachedData;
 			}
-			payload['filter'] = JSON.parse('{"name":["$Like","summary"]}');
-			payload['page'] = 1;
-			payload['limit'] = 10;
-
 			const output = await this.fieldRepository.findAndCount(await this.findMany(payload));
 
 			await this.cacheService.set([ 'field', 'many', payload ], output);
