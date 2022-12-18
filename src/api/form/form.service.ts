@@ -124,9 +124,11 @@ export class FormService extends SqlService {
 			this.cacheService.clear([ 'form', 'many' ]);
 			this.cacheService.clear([ 'form', 'one', payload ]);
 
-			await this.formFormFormOptionRepository.delete({ formId: payload['id'] });
-			await this.formFormOptionRepository.delete({ formId: payload['id'] });
-			await this.dropByIsDeleted(this.formRepository, payload['id']);
+			await this.dropByIsDeleted(this.formRepository, payload['id'], async (entity) => {
+				await this.formFormFormOptionRepository.delete({ formId: entity['id'] });
+				await this.formFormOptionRepository.delete({ formId: entity['id'] });
+				await this.formFieldRepository.delete({ formId: entity['id'] });
+			});
 
 			await queryRunner.commitTransaction();
 
@@ -155,9 +157,11 @@ export class FormService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.formFormFormOptionRepository.delete({ formId: payload['ids'][i] });
-				await this.formFormOptionRepository.delete({ formId: payload['ids'][i] });
-				await this.dropByIsDeleted(this.formRepository, payload['ids'][i]);
+				await this.dropByIsDeleted(this.formRepository, payload['ids'][i], async (entity) => {
+					await this.formFormFormOptionRepository.delete({ formId: entity['id'] });
+					await this.formFormOptionRepository.delete({ formId: entity['id'] });
+					await this.formFieldRepository.delete({ formId: entity['id'] });
+				});
 				i++;
 			}
 			await queryRunner.commitTransaction();

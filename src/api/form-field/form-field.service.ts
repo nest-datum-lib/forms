@@ -158,8 +158,6 @@ export class FormFieldService extends SqlService {
 			return formField;
 		}
 		catch (err) {
-			console.log('errr', err);
-
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 

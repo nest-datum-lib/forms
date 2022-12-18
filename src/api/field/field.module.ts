@@ -8,6 +8,7 @@ import { CacheService } from 'nest-datum/cache/src';
 import { Content } from '../content/content.entity';
 import { Form } from '../form/form.entity';
 import { FormField } from '../form-field/form-field.entity';
+import { FieldContent } from '../field-content/field-content.entity';
 import { FieldStatus } from '../field-status/field-status.entity';
 import { FieldFieldFieldOption } from '../field-field-field-option/field-field-field-option.entity';
 import { FieldFieldOption } from '../field-field-option/field-field-option.entity';
@@ -21,6 +22,7 @@ import { FieldController } from './field.controller';
 		TypeOrmModule.forFeature([ 
 			Form,
 			FormField,
+			FieldContent,
 			FieldStatus,
 			FieldFieldFieldOption,
 			FieldFieldOption,

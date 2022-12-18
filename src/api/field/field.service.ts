@@ -18,6 +18,7 @@ import {
 	NotFoundException, 
 } from 'nest-datum/exceptions/src';
 import { Field } from './field.entity';
+import { FieldContent } from '../field-content/field-content.entity';
 import { FieldFieldOption } from '../field-field-option/field-field-option.entity';
 import { FieldFieldFieldOption } from '../field-field-field-option/field-field-field-option.entity';
 import { FormField } from '../form-field/form-field.entity';
@@ -26,6 +27,7 @@ import { FormField } from '../form-field/form-field.entity';
 export class FieldService extends SqlService {
 	constructor(
 		@InjectRepository(Field) private readonly fieldRepository: Repository<Field>,
+		@InjectRepository(FieldContent) private readonly fieldContentRepository: Repository<FieldContent>,
 		@InjectRepository(FieldFieldOption) private readonly fieldFieldOptionRepository: Repository<FieldFieldOption>,
 		@InjectRepository(FieldFieldFieldOption) private readonly fieldFieldFieldOptionRepository: Repository<FieldFieldFieldOption>,
 		@InjectRepository(FormField) private readonly formFieldRepository: Repository<FormField>,
@@ -66,8 +68,6 @@ export class FieldService extends SqlService {
 			payload['page'] = 1;
 			payload['limit'] = 10;
 
-			console.log('await this.findMany(payload)', await this.findMany(payload));
-
 			const output = await this.fieldRepository.findAndCount(await this.findMany(payload));
 
 			await this.cacheService.set([ 'field', 'many', payload ], output);
@@ -107,10 +107,12 @@ export class FieldService extends SqlService {
 			this.cacheService.clear([ 'field', 'many' ]);
 			this.cacheService.clear([ 'field', 'one', payload ]);
 
-			await this.fieldFieldFieldOptionRepository.delete({ fieldId: payload['id'] });
-			await this.fieldFieldOptionRepository.delete({ fieldId: payload['id'] });
-			await this.formFieldRepository.delete({ fieldId: payload['id'] });
-			await this.dropByIsDeleted(this.fieldRepository, payload['id']);
+			await this.dropByIsDeleted(this.fieldRepository, payload['id'], async (entity) => {
+				await this.fieldFieldFieldOptionRepository.delete({ fieldId: entity['id'] });
+				await this.fieldFieldOptionRepository.delete({ fieldId: entity['id'] });
+				await this.fieldContentRepository.delete({ fieldId: entity['id'] });
+				await this.formFieldRepository.delete({ fieldId: entity['id'] });
+			});
 
 			return true;
 		}
@@ -131,9 +133,12 @@ export class FieldService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.fieldFieldFieldOptionRepository.delete({ fieldId: payload['ids'][i] });
-				await this.fieldFieldOptionRepository.delete({ fieldId: payload['ids'][i] });
-				await this.dropByIsDeleted(this.fieldRepository, payload['ids'][i]);
+				await this.dropByIsDeleted(this.fieldRepository, payload['ids'][i], async (entity) => {
+					await this.fieldFieldFieldOptionRepository.delete({ fieldId: entity['id'] });
+					await this.fieldFieldOptionRepository.delete({ fieldId: entity['id'] });
+					await this.fieldContentRepository.delete({ fieldId: entity['id'] });
+					await this.formFieldRepository.delete({ fieldId: entity['id'] });
+				});
 				i++;
 			}
 			await queryRunner.commitTransaction();

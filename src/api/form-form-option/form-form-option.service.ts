@@ -162,8 +162,6 @@ export class FormFormOptionService extends SqlService {
 			return formOptionRelation;
 		}
 		catch (err) {
-			console.log('errr', err);
-
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 

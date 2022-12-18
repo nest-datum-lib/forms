@@ -162,8 +162,6 @@ export class FieldFieldOptionService extends SqlService {
 			return fieldOptionRelation;
 		}
 		catch (err) {
-			console.log('errr', err);
-
 			await queryRunner.rollbackTransaction();
 			await queryRunner.release();
 
