@@ -103,8 +103,9 @@ export class FormOptionService extends SqlService {
 			this.cacheService.clear([ 'form', 'option', 'many' ]);
 			this.cacheService.clear([ 'form', 'option', 'one', payload ]);
 
-			await this.formFormOptionRepository.delete({ formOptionId: payload['id'] });
-			await this.dropByIsDeleted(this.formOptionRepository, payload['id']);
+			await this.dropByIsDeleted(this.formOptionRepository, payload['id'], async (entity) => {
+				await this.formFormOptionRepository.delete({ formOptionId: entity['id'] });
+			});
 
 			await queryRunner.commitTransaction();
 
@@ -133,8 +134,9 @@ export class FormOptionService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.formFormOptionRepository.delete({ formOptionId: payload['ids'][i] });
-				await this.dropByIsDeleted(this.formOptionRepository, payload['ids'][i]);
+				await this.dropByIsDeleted(this.formOptionRepository, payload['ids'][i], async (entity) => {
+					await this.formFormOptionRepository.delete({ formOptionId: entity['id'] });
+				});
 				i++;
 			}
 			await queryRunner.commitTransaction();

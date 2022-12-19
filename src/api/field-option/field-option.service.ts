@@ -103,8 +103,9 @@ export class FieldOptionService extends SqlService {
 			this.cacheService.clear([ 'field', 'option', 'many' ]);
 			this.cacheService.clear([ 'field', 'option', 'one', payload ]);
 
-			await this.fieldFieldOptionRepository.delete({ fieldOptionId: payload['id'] });
-			await this.dropByIsDeleted(this.fieldOptionRepository, payload['id']);
+			await this.dropByIsDeleted(this.fieldOptionRepository, payload['id'], async (entity) => {
+				await this.fieldFieldOptionRepository.delete({ fieldOptionId: entity['id'] });
+			});
 
 			await queryRunner.commitTransaction();
 
@@ -133,8 +134,9 @@ export class FieldOptionService extends SqlService {
 			let i = 0;
 
 			while (i < payload['ids'].length) {
-				await this.fieldFieldOptionRepository.delete({ fieldOptionId: payload['ids'][i] });
-				await this.dropByIsDeleted(this.fieldOptionRepository, payload['ids'][i]);
+				await this.dropByIsDeleted(this.fieldOptionRepository, payload['ids'][i], async (entity) => {
+					await this.fieldFieldOptionRepository.delete({ fieldOptionId: entity['id'] });
+				});
 				i++;
 			}
 			await queryRunner.commitTransaction();
