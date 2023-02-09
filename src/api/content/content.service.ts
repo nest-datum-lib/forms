@@ -36,8 +36,7 @@ export class ContentService extends SqlService {
 		id: true,
 		userId: true,
 		contentStatusId: true,
-		name: true,
-		description: true,
+		formId: true,
 		isDeleted: true,
 		isNotDelete: true,
 		createdAt: true,
@@ -46,7 +45,5 @@ export class ContentService extends SqlService {
 
 	protected queryDefaultMany = {
 		id: true,
-		name: true,
-		description: true,
 	};
 }
