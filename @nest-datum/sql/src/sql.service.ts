@@ -390,7 +390,7 @@ export class SqlService {
 		if (!payload['sort'] && this.selectDefaultMany['createdAt']) {
 			payload['sort'] = { createdAt: 'DESC' };
 		}
-		console.log('await this.findMany(payload)', await this.findMany(payload));
+		console.log('await this.findMany(payload)', payload, await this.findMany(payload));
 
 		const output = await this.repository.findAndCount(await this.findMany(payload));
 
