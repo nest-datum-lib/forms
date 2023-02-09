@@ -1,29 +1,42 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { 
-	BalancerRepository,
-	BalancerService, 
-} from 'nest-datum/balancer/src';
-import { CacheService } from 'nest-datum/cache/src';
-import { Field } from '../field/field.entity';
-import { FieldStatus } from './field-status.entity';
+	ReplicaModule,
+	ReplicaService, 
+} from '@nest-datum/replica';
+import { 
+	TransportModule,
+	TransportService, 
+} from '@nest-datum/transport';
+import {
+	CacheModule, 
+	CacheService, 
+} from '@nest-datum/cache';
+import { 
+	SqlModule,
+	SqlService, 
+} from '@nest-datum/sql';
 import { FieldStatusService } from './field-status.service';
 import { FieldStatusController } from './field-status.controller';
+import { FieldStatus } from './field-status.entity';
 
 @Module({
 	controllers: [ FieldStatusController ],
 	imports: [
-		TypeOrmModule.forFeature([ 
-			Field,
-			FieldStatus, 
-		]),
+		TypeOrmModule.forFeature([ FieldStatus ]),
+		ReplicaModule,
+		TransportModule,
+		CacheModule,
+		SqlModule,
 	],
 	providers: [
-		BalancerRepository, 
-		BalancerService,
+		ReplicaService,
+		TransportService,
 		CacheService,
+		SqlService,
 		FieldStatusService, 
 	],
 })
 export class FieldStatusModule {
 }
+

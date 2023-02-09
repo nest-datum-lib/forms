@@ -6,7 +6,7 @@ describe('FieldFieldOptionService', () => {
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [FieldFieldOptionService],
+			Fields: [FieldFieldOptionService],
 		}).compile();
 
 		service = module.get<FieldFieldOptionService>(FieldFieldOptionService);

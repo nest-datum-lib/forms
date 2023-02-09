@@ -1,194 +1,83 @@
-import getCurrentLine from 'get-current-line';
-import { Controller } from '@nestjs/common';
 import { 
 	MessagePattern,
 	EventPattern, 
 } from '@nestjs/microservices';
-import { BalancerService } from 'nest-datum/balancer/src';
-import * as Validators from 'nest-datum/validators/src';
+import { Controller } from '@nestjs/common';
+import { WarningException } from '@nest-datum-common/exceptions';
+import { TransportService } from '@nest-datum/transport';
+import { TcpController as NestDatumTcpController } from '@nest-datum-common/controller';
+import { 
+	str as utilsCheckStr,
+	strId as utilsCheckStrId,
+	strName as utilsCheckStrName,
+} from '@nest-datum-utils/check';
+import { 
+	checkToken,
+	getUser, 
+} from '@nest-datum/jwt';
 import { FieldContentService } from './field-content.service';
 
 @Controller()
-export class FieldContentController {
+export class FieldContentController extends NestDatumTcpController {
 	constructor(
-		private readonly fieldContentService: FieldContentService,
-		private readonly balancerService: BalancerService,
+		public transportService: TransportService,
+		public service: FieldContentService,
 	) {
+		super();
+	}
+
+	async validateCreate(options) {
+		if (!utilsCheckStrId(options['contentId'])) {
+			throw new WarningException(`Property "contentId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['contentId'] && utilsCheckStrId(options['contentId'])) 
+				? { contentId: options['contentId'] } 
+				: {},
+			...(options['fieldId'] && utilsCheckStrId(options['fieldId'])) 
+				? { fieldId: options['fieldId'] } 
+				: {},
+			...(options['fieldName'] && utilsCheckStrName(options['fieldName'])) 
+				? { fieldName: options['fieldName'] } 
+				: {},
+			...utilsCheckStr(options['value'])
+				? { value: options['value'] } 
+				: {},
+		};
 	}
 
 	@MessagePattern({ cmd: 'fieldContent.many' })
 	async many(payload) {
-		try {
-			const many = await this.fieldContentService.many({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_MANY'] ],
-					isRequired: true,
-				}),
-				relations: Validators.obj('relations', payload['relations']),
-				select: Validators.obj('select', payload['select']),
-				sort: Validators.obj('sort', payload['sort']),
-				filter: Validators.obj('filter', payload['filter']),
-				query: Validators.str('query', payload['query'], {
-					min: 1,
-					max: 255,
-				}),
-				page: Validators.int('page', payload['page'], {
-					min: 1,
-					default: 1,
-				}),
-				limit: Validators.int('limit', payload['limit'], {
-					min: 1,
-					default: 20,
-				}),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return {
-				total: many[1],
-				rows: many[0],
-			};
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.many(payload);
 	}
 
 	@MessagePattern({ cmd: 'fieldContent.one' })
 	async one(payload) {
-		try {
-			const output = await this.fieldContentService.one({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_ONE'] ],
-					isRequired: true,
-				}),
-				relations: Validators.obj('relations', payload['relations']),
-				select: Validators.obj('select', payload['select']),
-				id: Validators.id('id', payload['id'], {
-					isRequired: true,
-				}),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.one(payload);
 	}
 
 	@EventPattern('fieldContent.drop')
 	async drop(payload) {
-		try {
-			await this.fieldContentService.drop({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_DROP'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id'], {
-					isRequired: true,
-				}),
-			});
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.drop(payload);
 	}
 
 	@EventPattern('fieldContent.dropMany')
 	async dropMany(payload) {
-		try {
-			await this.fieldContentService.dropMany({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_DROP_MANY'] ],
-					isRequired: true,
-				}),
-				ids: Validators.arr('ids', payload['ids'], {
-					isRequired: true,
-					min: 1,
-				}),
-			});
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.dropMany(payload);
 	}
 
 	@EventPattern('fieldContent.create')
 	async create(payload) {
-		try {
-			const output = await this.fieldContentService.create({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_CREATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				userId: Validators.id('userId', payload['userId']),
-				contentId: Validators.id('contentId', payload['contentId'], {
-					isRequired: true,
-				}),
-				fieldId: Validators.id('fieldId', payload['fieldId']),
-				fieldName: Validators.id('fieldName', payload['fieldName']),
-				value: Validators.str('value', payload['value']),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.create(payload);
 	}
 
 	@EventPattern('fieldContent.update')
 	async update(payload) {
-		try {
-			await this.fieldContentService.update({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FIELD_CONTENT_UPDATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				newId: Validators.id('newId', payload['newId']),
-				fieldId: Validators.id('fieldId', payload['fieldId']),
-				contentId: Validators.id('contentId', payload['contentId']),
-				value: Validators.str('value', payload['value']),
-				isDeleted: Validators.bool('isDeleted', payload['isDeleted']),
-				createdAt: Validators.date('createdAt', payload['createdAt']),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.update(payload);
 	}
 }

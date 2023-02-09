@@ -1,31 +1,50 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { 
-	BalancerRepository,
-	BalancerService, 
-} from 'nest-datum/balancer/src';
-import { CacheService } from 'nest-datum/cache/src';
-import { FieldFieldOption } from '../field-field-option/field-field-option.entity';
-import { FieldOption } from './field-option.entity';
+	ReplicaModule,
+	ReplicaService, 
+} from '@nest-datum/replica';
+import { 
+	TransportModule,
+	TransportService, 
+} from '@nest-datum/transport';
+import {
+	CacheModule, 
+	CacheService, 
+} from '@nest-datum/cache';
+import { 
+	SqlModule,
+	SqlService, 
+} from '@nest-datum/sql';
 import { FieldOptionService } from './field-option.service';
 import { FieldOptionController } from './field-option.controller';
+import { FieldFieldFieldOption } from '../field-field-field-option/field-field-field-option.entity';
+import { Field } from '../field/field.entity';
+import { FieldFieldOption } from '../field-field-option/field-field-option.entity';
+import { FieldOption } from './field-option.entity';
 
 @Module({
 	controllers: [ FieldOptionController ],
 	imports: [
-		TypeOrmModule.forFeature([ 
+		TypeOrmModule.forFeature([
 			FieldOption,
-			FieldFieldOption, 
+			FieldFieldOption,
+			Field,
+			FieldFieldFieldOption,
 		]),
+		ReplicaModule,
+		TransportModule,
+		CacheModule,
+		SqlModule,
 	],
 	providers: [
-		BalancerRepository, 
-		BalancerService,
+		ReplicaService,
+		TransportService,
 		CacheService,
+		SqlService,
 		FieldOptionService, 
 	],
 })
 export class FieldOptionModule {
 }
-
 

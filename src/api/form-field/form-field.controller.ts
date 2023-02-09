@@ -1,164 +1,80 @@
-import getCurrentLine from 'get-current-line';
-import { Controller } from '@nestjs/common';
 import { 
 	MessagePattern,
 	EventPattern, 
 } from '@nestjs/microservices';
-import { BalancerService } from 'nest-datum/balancer/src';
-import * as Validators from 'nest-datum/validators/src';
+import { Controller } from '@nestjs/common';
+import { WarningException } from '@nest-datum-common/exceptions';
+import { TransportService } from '@nest-datum/transport';
+import { TcpController as NestDatumTcpController } from '@nest-datum-common/controller';
+import { 
+	str as utilsCheckStr,
+	strId as utilsCheckStrId,
+	strName as utilsCheckStrName,
+} from '@nest-datum-utils/check';
+import { 
+	checkToken,
+	getUser, 
+} from '@nest-datum/jwt';
 import { FormFieldService } from './form-field.service';
 
 @Controller()
-export class FormFieldController {
+export class FormFieldController extends NestDatumTcpController {
 	constructor(
-		private readonly formFieldService: FormFieldService,
-		private readonly balancerService: BalancerService,
+		public transportService: TransportService,
+		public service: FormFieldService,
 	) {
+		super();
+	}
+
+	async validateCreate(options) {
+		if (!utilsCheckStrId(options['formId'])) {
+			throw new WarningException(`Property "formId" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['fieldId'])) {
+			throw new WarningException(`Property "fieldId" is not valid.`);
+		}
+		return await this.validateUpdate(options);
+	}
+
+	async validateUpdate(options) {
+		return {
+			...await super.validateUpdate(options),
+			...(options['formId'] && utilsCheckStrId(options['formId'])) 
+				? { formId: options['formId'] } 
+				: {},
+			...(options['fieldId'] && utilsCheckStrId(options['fieldId'])) 
+				? { fieldId: options['fieldId'] } 
+				: {},
+		};
 	}
 
 	@MessagePattern({ cmd: 'formField.many' })
 	async many(payload) {
-		try {
-			const many = await this.formFieldService.many({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_MANY'] ],
-					isRequired: true,
-				}),
-				relations: Validators.obj('relations', payload['relations']),
-				select: Validators.obj('select', payload['select']),
-				sort: Validators.obj('sort', payload['sort']),
-				filter: Validators.obj('filter', payload['filter']),
-				query: Validators.str('query', payload['query'], {
-					min: 1,
-					max: 255,
-				}),
-				page: Validators.int('page', payload['page'], {
-					min: 1,
-					default: 1,
-				}),
-				limit: Validators.int('limit', payload['limit'], {
-					min: 1,
-					default: 20,
-				}),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return {
-				total: many[1],
-				rows: many[0],
-			};
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.many(payload);
 	}
 
 	@MessagePattern({ cmd: 'formField.one' })
 	async one(payload) {
-		try {
-			const output = await this.formFieldService.one({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_ONE'] ],
-					isRequired: true,
-				}),
-				relations: Validators.obj('relations', payload['relations']),
-				select: Validators.obj('select', payload['select']),
-				id: Validators.id('id', payload['id'], {
-					isRequired: true,
-				}),
-			});
-
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.one(payload);
 	}
 
 	@EventPattern('formField.drop')
 	async drop(payload) {
-		try {
-			await this.formFieldService.drop({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_DROP'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id'], {
-					isRequired: true,
-				}),
-			});
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.drop(payload);
 	}
 
 	@EventPattern('formField.dropMany')
 	async dropMany(payload) {
-		try {
-			await this.formFieldService.dropMany({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_FIELD_DROP_MANY'] ],
-					isRequired: true,
-				}),
-				ids: Validators.arr('ids', payload['ids'], {
-					isRequired: true,
-					min: 1,
-				}),
-			});
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return true;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+		return await super.dropMany(payload);
 	}
 
 	@EventPattern('formField.create')
 	async create(payload) {
-		try {
-			const output = await this.formFieldService.create({
-				user: Validators.token('accessToken', payload['accessToken'], {
-					accesses: [ process['ACCESS_FORMS_FORM_CREATE'] ],
-					isRequired: true,
-				}),
-				id: Validators.id('id', payload['id']),
-				formId: Validators.id('formId', payload['formId'], {
-					isRequired: true,
-				}),
-				fieldId: Validators.id('fieldId', payload['fieldId'], {
-					isRequired: true,
-				}),
-			});
+		return await super.create(payload);
+	}
 
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return output;
-		}
-		catch (err) {
-			this.balancerService.log(err);
-			this.balancerService.decrementServiceResponseLoadingIndicator();
-
-			return err;
-		}
+	@EventPattern('formField.update')
+	async update(payload) {
+		return await super.update(payload);
 	}
 }

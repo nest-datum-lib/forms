@@ -1,22 +1,14 @@
 import { 
-	Entity, 
-	Column,
-	PrimaryGeneratedColumn,
+	Entity,
+	Column, 
 	ManyToOne,
-	CreateDateColumn,
-	UpdateDateColumn,
 } from 'typeorm';
+import { OptionOptionOption as NestDatumOptionOptionOption } from '@nest-datum/option';
 import { FieldFieldOption } from '../field-field-option/field-field-option.entity';
 import { Field } from '../field/field.entity';
 
 @Entity()
-export class FieldFieldFieldOption {
-	@PrimaryGeneratedColumn('uuid')
-	public id: string;
-
-	@Column({ default: '' })
-	public parentId: string;
-
+export class FieldFieldFieldOption extends NestDatumOptionOptionOption {
 	@Column()
 	public fieldFieldOptionId: string;
 
@@ -30,22 +22,4 @@ export class FieldFieldFieldOption {
 
 	@ManyToOne(() => Field, (field) => field.fieldFieldFieldOptions)
 	public field: Field;
-
-	@Column('text')
-	public content: string;
-
-	@CreateDateColumn({ 
-		type: 'timestamp', 
-		precision: null,
-		default: () => 'CURRENT_TIMESTAMP', 
-	})
-	public createdAt: Date;
-
-	@UpdateDateColumn({ 
-		type: 'timestamp', 
-		precision: null,
-		default: () => 'CURRENT_TIMESTAMP',
-		onUpdate: 'CURRENT_TIMESTAMP', 
-	})
-	public updatedAt: Date;
 }
