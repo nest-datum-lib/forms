@@ -27,11 +27,11 @@ export class ContentController extends NestDatumTcpOptionController {
 	}
 
 	async validateCreate(options) {
-		if (!utilsCheckStrName(options['name'])) {
-			throw new WarningException(`Property "name" is not valid.`);
-		}
 		if (!utilsCheckStrId(options['contentStatusId'])) {
 			throw new WarningException(`Property "contentStatusId" is not valid.`);
+		}
+		if (!utilsCheckStrId(options['formId'])) {
+			throw new WarningException(`Property "formId" is not valid.`);
 		}
 		return await this.validateUpdate(options);
 	}
@@ -41,6 +41,9 @@ export class ContentController extends NestDatumTcpOptionController {
 			...await super.validateUpdate(options),
 			...(options['contentStatusId'] && utilsCheckStrId(options['contentStatusId'])) 
 				? { contentStatusId: options['contentStatusId'] } 
+				: {},
+			...(options['formId'] && utilsCheckStrId(options['formId'])) 
+				? { formId: options['formId'] } 
 				: {},
 		};
 	}
