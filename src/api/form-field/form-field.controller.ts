@@ -60,8 +60,6 @@ export class FormFieldController extends NestDatumTcpController {
 
 	@EventPattern('formField.drop')
 	async drop(payload) {
-		console.log('payload', payload);
-
 		return await super.drop(payload);
 	}
 

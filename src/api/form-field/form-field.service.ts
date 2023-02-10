@@ -33,4 +33,12 @@ export class FormFieldService extends SqlService {
 	protected queryDefaultMany = {
 		id: true,
 	};
+
+	async drop({ user, ...payload }, withTwoStepRemoval = true): Promise<any> {
+		return await super.drop({ user, ...payload }, false);
+	}
+
+	async dropMany({ user, ...payload }, withTwoStepRemoval = true): Promise<any> {
+		return await super.dropMany({ user, ...payload }, false);
+	}
 }
