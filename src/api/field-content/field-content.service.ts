@@ -43,6 +43,14 @@ export class FieldContentService extends SqlService {
 		id: true,
 	};
 
+	async drop({ user, ...payload }, withTwoStepRemoval = true): Promise<any> {
+		return await super.drop({ user, ...payload }, false);
+	}
+
+	async dropMany({ user, ...payload }, withTwoStepRemoval = true): Promise<any> {
+		return await super.dropMany({ user, ...payload }, false);
+	}
+
 	async create(payload: object = {}): Promise<any> {
 		const queryRunner = await this.connection.createQueryRunner(); 
 
