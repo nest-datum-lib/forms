@@ -22,7 +22,7 @@ export class SettingSeeder {
 			// new transaction
 			await queryRunner.startTransaction();
 			await Bluebird.each([{
-				id: 'cv-setting-app-id',
+				id: 'forms-setting-app-id',
 				name: 'App id',
 				description: 'App id.',
 				dataTypeId: 'data-type-type-text',

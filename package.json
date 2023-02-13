@@ -1,7 +1,7 @@
 {
-  "name": "@nest-datum-lib/cv",
+  "name": "@nest-datum-lib/forms",
   "version": "1.0.0",
-  "description": "CV documents parser.",
+  "description": "Service for dynamic creation of custom forms.",
   "author": "ihor-bielchenko",
   "private": true,
   "license": "UNLICENSED",

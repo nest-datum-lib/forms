@@ -1,10 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { 
-	redis,
-	sql, 
-} from '@nest-datum-common/config';
 import { 
 	ReplicaModule,
 	ReplicaService, 
@@ -17,30 +12,31 @@ import {
 	CacheModule, 
 	CacheService, 
 } from '@nest-datum/cache';
-import { Setting } from '../api/setting/setting.entity';
-import { SeedService } from './seed.service';
-import { SettingSeeder } from './setting.seeder';
+import { 
+	SqlModule,
+	SqlService, 
+} from '@nest-datum/sql';
+import { FieldStatusService } from './field-status.service';
+import { FieldStatusController } from './field-status.controller';
+import { FieldStatus } from './field-status.entity';
 
 @Module({
-	controllers: [],
+	controllers: [ FieldStatusController ],
 	imports: [
-		RedisModule.forRoot(redis),
-		TypeOrmModule.forRoot(sql),
-		TypeOrmModule.forFeature([
-			Setting,
-		]),
+		TypeOrmModule.forFeature([ FieldStatus ]),
 		ReplicaModule,
 		TransportModule,
 		CacheModule,
+		SqlModule,
 	],
 	providers: [
 		ReplicaService,
 		TransportService,
 		CacheService,
-		SeedService,
-		SettingSeeder,
-	]
+		SqlService,
+		FieldStatusService, 
+	],
 })
-
-export class SeedModule {
+export class FieldStatusModule {
 }
+
