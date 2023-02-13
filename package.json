@@ -1,7 +1,7 @@
 {
-  "name": "@nest-datum-lib/forms",
+  "name": "@nest-datum-lib/cv",
   "version": "1.0.0",
-  "description": "Service for dynamic creation of custom forms.",
+  "description": "CV documents parser.",
   "author": "ihor-bielchenko",
   "private": true,
   "license": "UNLICENSED",
@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "nest start --entryFile seed/main"
+    "seed": "nest start --entryFile src/seed/main"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.2",
