@@ -83,6 +83,8 @@ export class FieldContentService extends OptionOptionService {
 		console.log('************************')
 
 		if (!field) {
+			console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNN', content, { ...(field || {}) }, field);
+
 			field = (utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new Field, {
