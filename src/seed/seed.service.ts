@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { CacheService } from '@nest-datum/cache';
 import { SettingSeeder } from './setting.seeder';
+import { ReportStatusSeeder } from './report-status.seeder';
 
 @Injectable()
 export class SeedService {
@@ -16,9 +17,11 @@ export class SeedService {
 		private readonly cacheService: CacheService,
 		private readonly connection: Connection,
 		private readonly settings: SettingSeeder,
+		private readonly reportStatus: ReportStatusSeeder,
 	) {
 		this.seeders = [
 			this.settings,
+			this.reportStatus,
 		];
 	}
 
@@ -26,6 +29,8 @@ export class SeedService {
 		try {
 			await this.cacheService.clear([ 'setting', 'many' ]);
 			await this.cacheService.clear([ 'setting', 'one' ]);
+			await this.cacheService.clear([ 'reportStatus', 'many' ]);
+			await this.cacheService.clear([ 'reportStatus', 'one' ]);
 
 			await Bluebird.each(this.seeders, async (seeder) => {
 				this.logger.log(`Seeding ${seeder.constructor.name}`);
