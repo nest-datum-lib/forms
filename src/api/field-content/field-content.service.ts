@@ -78,6 +78,14 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
+		console.log('************************ field 111111')
+		console.log('*')
+		console.log('*')
+		console.log('*', field)
+		console.log('*')
+		console.log('*')
+		console.log('************************')
+
 		if (!field) {
 			field = (utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
@@ -95,6 +103,14 @@ export class FieldContentService extends OptionOptionService {
 					name: fieldName,
 					description: 'Automatically created field during search.',
 				});
+
+			console.log('************************ field 222222222222')
+			console.log('*')
+			console.log('*')
+			console.log('*', field)
+			console.log('*')
+			console.log('*')
+			console.log('************************')
 
 			(utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
