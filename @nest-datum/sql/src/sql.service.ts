@@ -470,10 +470,20 @@ export class SqlService {
 	}
 
 	protected async createProcess(payload: object): Promise<any> {
+		console.log('************************ createProcess 3333333333333333')
+		console.log('*')
+		console.log('*')
+		console.log('*')
+		console.log('*', { ...payload }, this.constructor.name)
+		console.log('*')
+		console.log('*')
+		console.log('*')
+		console.log('************************');
+
 		return (utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
-			? await this.queryRunner.manager.save(Object.assign(new this.entityConstructor(), payload))
-			: await this.entityRepository.save(payload);
+			? await this.queryRunner.manager.save(Object.assign(new this.entityConstructor(), { ...payload }))
+			: await this.entityRepository.save({ ...payload });
 	}
 
 	protected async createAfter(initialPayload: object, processedPayload: object, data: any): Promise<any> {
