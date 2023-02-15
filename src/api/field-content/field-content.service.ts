@@ -80,7 +80,7 @@ export class FieldContentService extends OptionOptionService {
 					name: fieldName,
 					description: 'Automatically created field during search.',
 				}))
-				: await this.fieldRepository.save(Object.assign(new Field, {
+				: await this.fieldRepository.save({
 					userId: process.env.USER_ID,
 					fieldStatusId: 'forms-field-status-active',
 					dataTypeId: 'data-type-type-text',
