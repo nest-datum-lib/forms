@@ -110,7 +110,7 @@ export class FieldContentService extends OptionOptionService {
 			console.log('*', field)
 			console.log('*')
 			console.log('*')
-			console.log('************************')
+			console.log('************************');
 
 			(utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
