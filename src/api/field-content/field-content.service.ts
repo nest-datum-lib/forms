@@ -54,6 +54,14 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
+		console.log('************************ getFieldByName')
+		console.log('*')
+		console.log('*')
+		console.log('*', contentId, content)
+		console.log('*')
+		console.log('*')
+		console.log('************************')
+
 		if (!content) {
 			throw new Error(`Content entity with id "${contentId}" is undefined.`);
 		}
