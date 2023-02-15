@@ -145,6 +145,11 @@ export class FieldContentService extends OptionOptionService {
 			console.log('##')
 			console.log('##', fieldId)
 			console.log('##')
+			console.log('##', {
+				fieldId,
+				...processedPayload,
+			})
+			console.log('##')
 			console.log('###################################33333')
 
 			return {

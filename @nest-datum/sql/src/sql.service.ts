@@ -444,6 +444,9 @@ export class SqlService {
 			this.cacheService.clear([ this.entityName, 'many' ]);
 
 			const processedPayload = await this.createProperties(payload);
+
+			console.log('$$$$$$$$$$$$$$processedPayload$$$$$$$$$$$$$$$$$$$4', { ...processedPayload }, this.constructor.name);
+
 			const output = await this.createProcess(processedPayload);
 
 			return await this.createOutput(processedPayload, await this.createAfter(payload, processedPayload, output));
