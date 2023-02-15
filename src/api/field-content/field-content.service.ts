@@ -53,6 +53,8 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
+		console.log('getFieldByName 0000 content', content);
+
 		if (!content) {
 			return new NotFoundException(`Content entity with id "${contentId}" is undefined.`);
 		}
@@ -69,6 +71,8 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
+		console.log('getFieldByName 1111 field', field);
+
 		if (!field) {
 			field = await this.fieldRepository.save({
 				userId: process.env.USER_ID,
@@ -78,20 +82,32 @@ export class FieldContentService extends OptionOptionService {
 				description: 'Automatically created field during search.',
 			});
 
+			console.log('getFieldByName 2222 field', field);
+
 			await this.formFieldRepository.save({
 				userId: process.env.USER_ID,
 				formId: content['formId'],
 				fieldId: field['id'],
 			});
 		}
+		console.log('getFieldByName 3333 field', field);
 		return field['id'];
 	}
 
 	protected async createProperties(payload: object): Promise<any> {
 		const processedPayload = await super.createProperties(payload);
 
+		console.log('@@@@@@@@@@@@@@@@@@@@@@@', processedPayload);
+
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
+			console.log('------------', processedPayload);
+
+			console.log('000000000', {
+				fieldId: ((await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId'])) || {})['fieldId'],
+				...processedPayload,
+			})
+
 			return {
 				fieldId: ((await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId'])) || {})['fieldId'],
 				...processedPayload,
