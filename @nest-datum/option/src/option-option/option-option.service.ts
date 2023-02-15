@@ -32,18 +32,12 @@ export class OptionOptionService extends SqlService {
 	}
 
 	protected async createBefore(payload): Promise<any> {
-		this.cacheService.clear([ this.entityOptionName, 'many' ]);
+		this.cacheService.clear([ this.entityOptionName || this.entityName, 'many' ]);
 
 		return await super.createBefore(payload);
 	}
 
 	protected async updateBefore(payload): Promise<any> {
-		console.log('************************')
-		console.log('*')
-		console.log('*', this.entityOptionName, this.entityName, this.constructor.name)
-		console.log('*')
-		console.log('************************')
-		
 		this.cacheService.clear([ this.entityOptionName || this.entityName, 'many' ]);
 
 		return await super.updateBefore(payload);
