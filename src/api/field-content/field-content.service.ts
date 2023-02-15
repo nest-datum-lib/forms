@@ -140,7 +140,7 @@ export class FieldContentService extends OptionOptionService {
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
 			return {
-				fieldId: ((await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId'])) || {})['fieldId'],
+				fieldId: await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']),
 				...processedPayload,
 			};
 		}
