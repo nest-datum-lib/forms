@@ -38,6 +38,12 @@ export class OptionOptionService extends SqlService {
 	}
 
 	protected async updateBefore(payload): Promise<any> {
+		console.log('************************')
+		console.log('*')
+		console.log('*', this.entityOptionName, this.entityName, this.constructor.name)
+		console.log('*')
+		console.log('************************')
+		
 		this.cacheService.clear([ this.entityOptionName || this.entityName, 'many' ]);
 
 		return await super.updateBefore(payload);
