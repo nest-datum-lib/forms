@@ -79,7 +79,7 @@ export class FieldContentService extends OptionOptionService {
 					dataTypeId: 'data-type-type-text',
 					name: fieldName,
 					description: 'Automatically created field during search.',
-				})
+				}))
 				: await this.fieldRepository.save(Object.assign(new Field, {
 					userId: process.env.USER_ID,
 					fieldStatusId: 'forms-field-status-active',
@@ -94,7 +94,8 @@ export class FieldContentService extends OptionOptionService {
 					userId: process.env.USER_ID,
 					formId: content['formId'],
 					fieldId: field['id'],
-				}) await this.formFieldRepository.save({
+				}))
+				: await this.formFieldRepository.save({
 					userId: process.env.USER_ID,
 					formId: content['formId'],
 					fieldId: field['id'],
