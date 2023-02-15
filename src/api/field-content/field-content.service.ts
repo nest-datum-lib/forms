@@ -66,10 +66,6 @@ export class FieldContentService extends OptionOptionService {
 			throw new Error(`Content entity with id "${contentId}" is undefined.`);
 		}
 		let field = await this.fieldRepository.findOne({
-			select: {
-				id: true,
-				name: true,
-			},
 			where: {
 				name: Like(`%${fieldName}%`),
 				formFields: {
