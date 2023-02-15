@@ -26,9 +26,11 @@ import { Form } from '../api/form/form.entity';
 import { FormField } from '../api/form-field/form-field.entity';
 import { FormFormFormOption } from '../api/form-form-form-option/form-form-form-option.entity';
 import { FormFormOption } from '../api/form-form-option/form-form-option.entity';
+import { FormOption } from '../api/form-option/form-option.entity';
 import { Field } from '../api/field/field.entity';
 import { FieldFieldFieldOption } from '../api/field-field-field-option/field-field-field-option.entity';
 import { FieldFieldOption } from '../api/field-field-option/field-field-option.entity';
+import { FieldOption } from '../api/field-option/field-option.entity';
 import { SettingSeeder } from './setting.seeder';
 import { FormStatusSeeder } from './form-status.seeder';
 import { FieldStatusSeeder } from './field-status.seeder';
@@ -45,9 +47,11 @@ import { FormSeeder } from './form.seeder';
 			FormStatus,
 			FieldStatus,
 			ContentStatus,
+			FieldOption,
 			Field,
 			FieldFieldOption,
 			FieldFieldFieldOption,
+			FormOption,
 			Form,
 			FormFormOption,
 			FormFormFormOption,
