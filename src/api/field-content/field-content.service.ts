@@ -96,6 +96,10 @@ export class FieldContentService extends OptionOptionService {
 					formId: content['formId'],
 					fieldId: field['id'],
 				});
+
+			this.cacheService.clear([ 'field', 'many' ]);
+			this.cacheService.clear([ 'formField', 'many' ]);
+			this.cacheService.clear([ 'content', 'many' ]);
 		}
 		return ({ ...(field || {}) })['id'];
 	}
