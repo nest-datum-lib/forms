@@ -77,7 +77,7 @@ export class FieldContentService extends OptionOptionService {
 		console.log('************************ field 111111')
 		console.log('*')
 		console.log('*')
-		console.log('*', field)
+		console.log('*', field['id'], field)
 		console.log('*')
 		console.log('*')
 		console.log('************************')
@@ -121,6 +121,14 @@ export class FieldContentService extends OptionOptionService {
 					fieldId: field['id'],
 				});
 		}
+		console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+		console.log('>')
+		console.log('>', (field || {})['id'])
+		console.log('>')
+		console.log('>', { ...(field || {}) }, ({ ...(field || {}) })['id'])
+		console.log('>')
+		console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
+
 		return field['id'];
 	}
 
