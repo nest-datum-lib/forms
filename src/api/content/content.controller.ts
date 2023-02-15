@@ -65,6 +65,8 @@ export class ContentController extends TcpController {
 
 	@EventPattern('content.create')
 	async create(payload) {
+		console.log('>>>>>>>>>>>>>>>>', payload);
+
 		return await super.create(payload);
 	}
 

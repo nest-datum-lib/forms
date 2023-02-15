@@ -5,6 +5,7 @@ export class OptionOptionService extends SqlService {
 	protected entityWithTwoStepRemoval = false;
 	protected entityOptionId;
 	protected entityId;
+	protected entityName;
 	protected entityOptionName;
 
 	protected manyGetColumns(customColumns: object = {}) {
@@ -37,7 +38,7 @@ export class OptionOptionService extends SqlService {
 	}
 
 	protected async updateBefore(payload): Promise<any> {
-		this.cacheService.clear([ this.entityOptionName, 'many' ]);
+		this.cacheService.clear([ this.entityOptionName || this.entityName, 'many' ]);
 
 		return await super.updateBefore(payload);
 	}

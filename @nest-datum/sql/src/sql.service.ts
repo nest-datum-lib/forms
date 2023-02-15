@@ -422,6 +422,8 @@ export class SqlService {
 	}
 
 	public async create(payload: object = {}): Promise<any> {
+		console.log('RRRRRRRRRRRRRRRRRRRRRRR', payload, this.constructor.name);
+
 		await this.createQueryRunnerManager();
 		
 		try {
