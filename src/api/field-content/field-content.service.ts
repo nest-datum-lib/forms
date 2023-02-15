@@ -56,7 +56,9 @@ export class FieldContentService extends OptionOptionService {
 		console.log('getFieldByName 0000 content', content, typeof content, !!content);
 
 		if (!content) {
-			return new NotFoundException(`Content entity with id "${contentId}" is undefined.`);
+			console.log('!!!!!!!!!!!!!!!!!!!!!!!!');
+
+			throw new Error(`Content entity with id "${contentId}" is undefined.`);
 		}
 		let field = await this.fieldRepository.findOne({
 			select: {
