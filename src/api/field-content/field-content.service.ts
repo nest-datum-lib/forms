@@ -131,7 +131,7 @@ export class FieldContentService extends OptionOptionService {
 		console.log('>')
 		console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
 
-		return field['id'];
+		return ({ ...(field || {}) })['id'];
 	}
 
 	protected async createProperties(payload: object): Promise<any> {
@@ -139,8 +139,16 @@ export class FieldContentService extends OptionOptionService {
 
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
+			const fileId = await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']);
+
+			console.log('###################################3 fileId')
+			console.log('##')
+			console.log('##', fileId)
+			console.log('##')
+			console.log('###################################33333')
+
 			return {
-				fieldId: await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']),
+				fieldId,
 				...processedPayload,
 			};
 		}
