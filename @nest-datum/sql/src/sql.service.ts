@@ -431,6 +431,15 @@ export class SqlService {
 		try {
 			await this.startQueryRunnerManager();
 			await this.createBefore(payload);
+
+			console.log('____________________________')
+			console.log('|')
+			console.log('|')
+			console.log('create 0', this.entityName, this.constructor.name);
+			console.log('|')
+			console.log('create 1', payload);
+			console.log('|')
+			console.log('---------------------------------')
 		
 			this.cacheService.clear([ this.entityName, 'many' ]);
 
