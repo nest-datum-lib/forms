@@ -20,17 +20,19 @@ import {
 import { SeedService } from './seed.service';
 import { Setting } from '../api/setting/setting.entity';
 import { FormStatus } from '../api/form-status/form-status.entity';
-import { FieldStatus } from '../api/field-status/field-status.entity';
-import { ContentStatus } from '../api/content-status/content-status.entity';
-import { Form } from '../api/form/form.entity';
-import { FormField } from '../api/form-field/form-field.entity';
-import { FormFormFormOption } from '../api/form-form-form-option/form-form-form-option.entity';
-import { FormFormOption } from '../api/form-form-option/form-form-option.entity';
 import { FormOption } from '../api/form-option/form-option.entity';
-import { Field } from '../api/field/field.entity';
-import { FieldFieldFieldOption } from '../api/field-field-field-option/field-field-field-option.entity';
-import { FieldFieldOption } from '../api/field-field-option/field-field-option.entity';
+import { FormFormOption } from '../api/form-form-option/form-form-option.entity';
+import { FormFormFormOption } from '../api/form-form-form-option/form-form-form-option.entity';
+import { Form } from '../api/form/form.entity';
+import { FieldStatus } from '../api/field-status/field-status.entity';
 import { FieldOption } from '../api/field-option/field-option.entity';
+import { FieldFieldOption } from '../api/field-field-option/field-field-option.entity';
+import { FieldFieldFieldOption } from '../api/field-field-field-option/field-field-field-option.entity';
+import { Field } from '../api/field/field.entity';
+import { FormField } from '../api/form-field/form-field.entity';
+import { Content } from '../api/content/content.entity';
+import { ContentStatus } from '../api/content-status/content-status.entity';
+import { FieldContent } from '../api/field-content/field-content.entity';
 import { SettingSeeder } from './setting.seeder';
 import { FormStatusSeeder } from './form-status.seeder';
 import { FieldStatusSeeder } from './field-status.seeder';
@@ -56,6 +58,9 @@ import { FormSeeder } from './form.seeder';
 			FormFormOption,
 			FormFormFormOption,
 			FormField,
+			ContentStatus,
+			Content,
+			FieldContent,
 		]),
 		ReplicaModule,
 		TransportModule,
