@@ -432,21 +432,9 @@ export class SqlService {
 			await this.startQueryRunnerManager();
 			await this.createBefore(payload);
 
-			console.log('____________________________')
-			console.log('|')
-			console.log('|')
-			console.log('create 0', this.entityName, this.constructor.name);
-			console.log('|')
-			console.log('create 1', payload);
-			console.log('|')
-			console.log('---------------------------------')
-		
 			this.cacheService.clear([ this.entityName, 'many' ]);
 
 			const processedPayload = await this.createProperties(payload);
-
-			console.log('$$$$$$$$$$$$$$processedPayload$$$$$$$$$$$$$$$$$$$4', { ...processedPayload }, this.constructor.name);
-
 			const output = await this.createProcess(processedPayload);
 
 			return await this.createOutput(processedPayload, await this.createAfter(payload, processedPayload, output));
@@ -473,16 +461,6 @@ export class SqlService {
 	}
 
 	protected async createProcess(payload: object): Promise<any> {
-		console.log('************************ createProcess 3333333333333333')
-		console.log('*')
-		console.log('*')
-		console.log('*')
-		console.log('*', { ...payload }, this.constructor.name)
-		console.log('*')
-		console.log('*')
-		console.log('*')
-		console.log('************************');
-
 		return (utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
 			? await this.queryRunner.manager.save(Object.assign(new this.entityConstructor(), { ...payload }))

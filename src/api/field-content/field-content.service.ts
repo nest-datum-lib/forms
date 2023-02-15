@@ -54,14 +54,6 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
-		console.log('************************ getFieldByName')
-		console.log('*')
-		console.log('*')
-		console.log('*', contentId, content)
-		console.log('*')
-		console.log('*')
-		console.log('************************')
-
 		if (!content) {
 			throw new Error(`Content entity with id "${contentId}" is undefined.`);
 		}
@@ -74,17 +66,7 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
-		console.log('************************ field 111111')
-		console.log('*')
-		console.log('*')
-		console.log('*', field['id'], field)
-		console.log('*')
-		console.log('*')
-		console.log('************************')
-
 		if (!field) {
-			console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNN', content, { ...(field || {}) }, field);
-
 			field = (utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new Field, {
@@ -102,14 +84,6 @@ export class FieldContentService extends OptionOptionService {
 					description: 'Automatically created field during search.',
 				});
 
-			console.log('************************ field 222222222222')
-			console.log('*')
-			console.log('*')
-			console.log('*', field)
-			console.log('*')
-			console.log('*')
-			console.log('************************');
-
 			(utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new FormField, {
@@ -123,14 +97,6 @@ export class FieldContentService extends OptionOptionService {
 					fieldId: field['id'],
 				});
 		}
-		console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
-		console.log('>')
-		console.log('>', (field || {})['id'])
-		console.log('>')
-		console.log('>', { ...(field || {}) }, ({ ...(field || {}) })['id'])
-		console.log('>')
-		console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.')
-
 		return ({ ...(field || {}) })['id'];
 	}
 
@@ -140,17 +106,6 @@ export class FieldContentService extends OptionOptionService {
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
 			const fieldId = await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']);
-
-			console.log('###################################3 fieldId')
-			console.log('##')
-			console.log('##', fieldId)
-			console.log('##')
-			console.log('##', {
-				...processedPayload,
-				fieldId,
-			})
-			console.log('##')
-			console.log('###################################33333')
 
 			return {
 				...processedPayload,
