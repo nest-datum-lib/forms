@@ -139,11 +139,11 @@ export class FieldContentService extends OptionOptionService {
 
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
-			const fileId = await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']);
+			const fieldId = await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']);
 
-			console.log('###################################3 fileId')
+			console.log('###################################3 fieldId')
 			console.log('##')
-			console.log('##', fileId)
+			console.log('##', fieldId)
 			console.log('##')
 			console.log('###################################33333')
 
