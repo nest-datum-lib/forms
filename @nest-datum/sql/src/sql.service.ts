@@ -427,8 +427,6 @@ export class SqlService {
 		try {
 			await this.startQueryRunnerManager();
 			await this.createBefore(payload);
-
-			console.log('this.entityName', this.entityName);
 		
 			this.cacheService.clear([ this.entityName, 'many' ]);
 
@@ -438,8 +436,6 @@ export class SqlService {
 			return await this.createOutput(processedPayload, await this.createAfter(payload, processedPayload, output));
 		}
 		catch (err) {
-			console.log('+++++++++++++', err);
-
 			await this.rollbackQueryRunnerManager();
 
 			throw err;

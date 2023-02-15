@@ -1,7 +1,6 @@
 import Redis from 'ioredis';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Injectable } from '@nestjs/common';
-import { ErrorException } from '@nest-datum-common/exceptions';
 import { RedisService } from '@nest-datum/redis';
 import { ReplicaService } from '@nest-datum/replica';
 import { 
@@ -27,7 +26,9 @@ export class CacheService extends RedisService {
 
 		while (i < query.length) {
 			if (!query[i]) {
-				throw new ErrorException(`Cache query item is undefined.`);
+				console.log('11111', e.query)
+
+				throw new Error(`Cache query item is undefined.`);
 			}
 			if (utlisCheckObj(query[i])) {
 				const processedItem = { ...query[i] };

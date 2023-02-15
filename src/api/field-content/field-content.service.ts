@@ -11,6 +11,7 @@ import { CacheService } from '@nest-datum/cache';
 import { 
 	strId as utilsCheckStrId,
 	strName as utilsCheckStrName,
+	objQueryRunner as utilsCheckObjQueryRunner,
 } from '@nest-datum-utils/check';
 import { Content } from '../content/content.entity';
 import { Field } from '../field/field.entity';
@@ -53,11 +54,7 @@ export class FieldContentService extends OptionOptionService {
 			},
 		});
 
-		console.log('getFieldByName 0000 content', content, typeof content, !!content);
-
 		if (!content) {
-			console.log('!!!!!!!!!!!!!!!!!!!!!!!!');
-
 			throw new Error(`Content entity with id "${contentId}" is undefined.`);
 		}
 		let field = await this.fieldRepository.findOne({
@@ -74,19 +71,34 @@ export class FieldContentService extends OptionOptionService {
 		});
 
 		if (!field) {
-			field = await this.fieldRepository.save({
-				userId: process.env.USER_ID,
-				fieldStatusId: 'forms-field-status-active',
-				dataTypeId: 'data-type-type-text',
-				name: fieldName,
-				description: 'Automatically created field during search.',
-			});
+			field = (utilsCheckObjQueryRunner(this.queryRunner) 
+				&& this.enableTransactions === true)
+				? await this.queryRunner.manager.save(Object.assign(new Field, {
+					userId: process.env.USER_ID,
+					fieldStatusId: 'forms-field-status-active',
+					dataTypeId: 'data-type-type-text',
+					name: fieldName,
+					description: 'Automatically created field during search.',
+				})
+				: await this.fieldRepository.save(Object.assign(new Field, {
+					userId: process.env.USER_ID,
+					fieldStatusId: 'forms-field-status-active',
+					dataTypeId: 'data-type-type-text',
+					name: fieldName,
+					description: 'Automatically created field during search.',
+				});
 
-			await this.formFieldRepository.save({
-				userId: process.env.USER_ID,
-				formId: content['formId'],
-				fieldId: field['id'],
-			});
+			(utilsCheckObjQueryRunner(this.queryRunner) 
+				&& this.enableTransactions === true)
+				? await this.queryRunner.manager.save(Object.assign(new FormField, {
+					userId: process.env.USER_ID,
+					formId: content['formId'],
+					fieldId: field['id'],
+				}) await this.formFieldRepository.save({
+					userId: process.env.USER_ID,
+					formId: content['formId'],
+					fieldId: field['id'],
+				});
 		}
 		return field['id'];
 	}
@@ -96,11 +108,6 @@ export class FieldContentService extends OptionOptionService {
 
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
-			console.log('000000000', {
-				fieldId: ((await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId'])) || {})['fieldId'],
-				...processedPayload,
-			})
-
 			return {
 				fieldId: ((await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId'])) || {})['fieldId'],
 				...processedPayload,
