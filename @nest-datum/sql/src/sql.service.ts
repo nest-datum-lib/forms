@@ -261,7 +261,8 @@ export class SqlService {
 			return cachedData;
 		}
 		const processedPayload = await this.manyProperties(payload);
-		const many = await this.entityRepository.findAndCount(await this.findMany(processedPayload));
+		const condition = await this.findMany(processedPayload);
+		const many = await this.entityRepository.findAndCount(condition);
 		const output = {
 			rows: many[0],
 			total: many[1],
@@ -431,7 +432,7 @@ export class SqlService {
 		try {
 			await this.startQueryRunnerManager();
 			await this.createBefore(payload);
-
+		
 			this.cacheService.clear([ this.entityName, 'many' ]);
 
 			const processedPayload = await this.createProperties(payload);
@@ -463,8 +464,8 @@ export class SqlService {
 	protected async createProcess(payload: object): Promise<any> {
 		return (utilsCheckObjQueryRunner(this.queryRunner) 
 				&& this.enableTransactions === true)
-			? await this.queryRunner.manager.save(Object.assign(new this.entityConstructor(), { ...payload }))
-			: await this.entityRepository.save({ ...payload });
+			? await this.queryRunner.manager.save(Object.assign(new this.entityConstructor(), payload))
+			: await this.entityRepository.save(payload);
 	}
 
 	protected async createAfter(initialPayload: object, processedPayload: object, data: any): Promise<any> {
