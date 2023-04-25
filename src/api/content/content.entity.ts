@@ -8,7 +8,6 @@ import {
 	OneToMany,
 } from 'typeorm';
 import { Form } from '../form/form.entity';
-import { ContentStatus } from '../content-status/content-status.entity';
 import { FieldContent } from '../field-content/field-content.entity';
 
 @Entity()
@@ -27,9 +26,6 @@ export class Content {
 
 	@Column({ default: '' })
 	public contentStatusId: string;
-
-	@ManyToOne(() => ContentStatus, (contentStatus) => contentStatus.contents)
-	public contentStatus: ContentStatus;
 
 	@Column('boolean', { default: false })
 	public isDeleted: boolean = false;

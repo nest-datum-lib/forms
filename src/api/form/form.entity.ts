@@ -6,9 +6,9 @@ import {
 	UpdateDateColumn,
 	ManyToOne,
 	OneToMany,
+	Index,
 } from 'typeorm';
 import { FormField } from '../form-field/form-field.entity';
-import { FormStatus } from '../form-status/form-status.entity';
 import { FormFormFormOption } from '../form-form-form-option/form-form-form-option.entity';
 import { FormFormOption } from '../form-form-option/form-form-option.entity';
 import { Content } from '../content/content.entity';
@@ -19,15 +19,18 @@ export class Form {
 	public id: string;
 
 	@Column({ default: '' })
+	public envKey: string;
+
+	@Column({ default: '' })
+	@Index()
 	public userId: string;
 
 	@Column({ default: '' })
+	@Index()
 	public formStatusId: string;
 
-	@ManyToOne(() => FormStatus, (formStatus) => formStatus.forms)
-	public formStatus: FormStatus;
-
 	@Column()
+	@Index()
 	public name: string;
 
 	@Column({ default: '' })

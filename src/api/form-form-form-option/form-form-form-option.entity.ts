@@ -1,22 +1,14 @@
 import { 
-	Entity, 
-	Column,
-	PrimaryGeneratedColumn,
+	Entity,
+	Column, 
 	ManyToOne,
-	CreateDateColumn,
-	UpdateDateColumn,
 } from 'typeorm';
+import { Many } from '@nest-datum/many';
 import { FormFormOption } from '../form-form-option/form-form-option.entity';
 import { Form } from '../form/form.entity';
 
 @Entity()
-export class FormFormFormOption {
-	@PrimaryGeneratedColumn('uuid')
-	public id: string;
-
-	@Column({ default: '' })
-	public parentId: string;
-
+export class FormFormFormOption extends Many {
 	@Column()
 	public formFormOptionId: string;
 
@@ -30,22 +22,4 @@ export class FormFormFormOption {
 
 	@ManyToOne(() => Form, (form) => form.formFormFormOptions)
 	public form: Form;
-
-	@Column('text')
-	public content: string;
-
-	@CreateDateColumn({ 
-		type: 'timestamp', 
-		precision: null,
-		default: () => 'CURRENT_TIMESTAMP', 
-	})
-	public createdAt: Date;
-
-	@UpdateDateColumn({ 
-		type: 'timestamp', 
-		precision: null,
-		default: () => 'CURRENT_TIMESTAMP',
-		onUpdate: 'CURRENT_TIMESTAMP', 
-	})
-	public updatedAt: Date;
 }
