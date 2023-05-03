@@ -49,8 +49,8 @@ export class FormOptionTcpController extends OptionTcpController {
 		return await super.content(payload);
 	}
 
-	@EventPattern('form.updateContent')
-	async updateContent(payload) {
-		return await super.updateContent(payload);
+	@EventPattern('form.contentUpdate')
+	async contentUpdate(payload) {
+		return await super.contentUpdate(payload);
 	}
 }

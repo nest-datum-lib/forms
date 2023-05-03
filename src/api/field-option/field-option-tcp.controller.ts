@@ -49,8 +49,8 @@ export class FieldOptionTcpController extends OptionTcpController {
 		return await super.content(payload);
 	}
 
-	@EventPattern('field.updateContent')
-	async updateContent(payload) {
-		return await super.updateContent(payload);
+	@EventPattern('field.contentUpdate')
+	async contentUpdate(payload) {
+		return await super.contentUpdate(payload);
 	}
 }
