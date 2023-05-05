@@ -9,6 +9,7 @@ import {
 	UnauthorizedException,
 	MethodNotAllowedException
 } from '@nestjs/common';
+import { AccessToken } from '@nest-datum-common/decorators';
 import { HttpController } from '@nest-datum-common/controllers';
 import { 
 	checkToken,
