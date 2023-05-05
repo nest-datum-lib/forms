@@ -28,6 +28,7 @@ export class BindHttpTcpController extends HttpTcpController {
 		}
 
 		return {
+			accessToken: options['accessToken'],
 			userId: user['id'],
 			[this.mainRelationColumnName ?? 'entityId']: options[this.mainRelationColumnName ?? 'entityId'],
 			[this.optionRelationColumnName ?? 'entityOptionId']: options[this.optionRelationColumnName ?? 'entityOptionId'],
