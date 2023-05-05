@@ -28,13 +28,14 @@ export class BindHttpController extends HttpController {
 		const user = getUser(options['accessToken']);
 
 		if (!utilsCheckStrId(options[this.mainRelationColumnName])) {
-			throw new MethodNotAllowedException(`Property "entityId" is not valid.`);
+			throw new MethodNotAllowedException(`Property "${this.mainRelationColumnName}" is not valid.`);
 		}
 		if (!utilsCheckStrId(options[this.optionRelationColumnName])) {
-			throw new MethodNotAllowedException(`Property "entityOptionId" is not valid.`);
+			throw new MethodNotAllowedException(`Property "${this.optionRelationColumnName}" is not valid.`);
 		}
 
 		return {
+			accessToken: options['accessToken'],
 			userId: user['id'],
 			[this.mainRelationColumnName]: options[this.mainRelationColumnName],
 			[this.optionRelationColumnName]: options[this.optionRelationColumnName],
@@ -44,16 +45,16 @@ export class BindHttpController extends HttpController {
 	@Post(':id')
 	async create(
 		@AccessToken() accessToken: string,
-		@Param('id') entityOptionId: string,
+		@Param('id') entityId: string,
 		@Body() data,
 	) {
 		const dataKeys = Object.keys(data);
-		const entityId = data[dataKeys[0]];
+		const entityRelationId = data[dataKeys[0]];
 
 		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
 			accessToken,
-			entityId,
-			entityOptionId,
+			[this.mainRelationColumnName]: entityId,
+			[this.optionRelationColumnName]: entityRelationId,
 		})));
 	}
 }
