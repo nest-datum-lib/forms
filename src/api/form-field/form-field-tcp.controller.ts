@@ -8,6 +8,9 @@ import { FormFieldService } from './form-field.service';
 
 @Controller()
 export class FormFieldTcpController extends BindTcpController {
+	protected readonly mainRelationColumnName: string = 'formId';
+	protected readonly optionRelationColumnName: string = 'fieldId';
+
 	constructor(
 		protected service: FormFieldService,
 	) {

@@ -8,6 +8,9 @@ import { FieldContentService } from './field-content.service';
 
 @Controller()
 export class FieldContentTcpController extends BindTcpController {
+	protected readonly mainRelationColumnName: string = 'fieldId';
+	protected readonly optionRelationColumnName: string = 'contentId';
+	
 	constructor(
 		protected service: FieldContentService,
 	) {

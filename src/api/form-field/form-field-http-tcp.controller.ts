@@ -6,6 +6,8 @@ import { TransportService } from '@nest-datum/transport';
 export class FormFieldHttpTcpController extends BindHttpTcpController {
 	protected readonly serviceName: string = process.env.SERVICE_FORMS;
 	protected readonly entityName: string = 'formField';
+	protected readonly mainRelationColumnName: string = 'formId';
+	protected readonly optionRelationColumnName: string = 'fieldId';
 
 	constructor(
 		protected transport: TransportService,

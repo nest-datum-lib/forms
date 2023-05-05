@@ -8,6 +8,9 @@ import { FieldFieldOptionService } from './field-field-option.service';
 
 @Controller()
 export class FieldFieldOptionTcpController extends BindTcpController {
+	protected readonly mainRelationColumnName: string = 'fieldId';
+	protected readonly optionRelationColumnName: string = 'fieldOptionId';
+	
 	constructor(
 		protected service: FieldFieldOptionService,
 	) {

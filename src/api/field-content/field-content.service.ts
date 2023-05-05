@@ -69,15 +69,15 @@ export class FieldContentService extends BindService {
 				&& this.enableTransactions === true)
 				? await this.queryRunner.manager.save(Object.assign(new Field, {
 					userId: process.env.USER_ID,
-					fieldStatusId: 'forms-field-status-active',
-					dataTypeId: 'data-type-type-text',
+					fieldStatusId: 'happ-forms-field-status-active',
+					dataTypeId: 'happ-data-type-text',
 					name: fieldName,
 					description: 'Automatically created field during search.',
 				}))
 				: await this.fieldRepository.save({
 					userId: process.env.USER_ID,
-					fieldStatusId: 'forms-field-status-active',
-					dataTypeId: 'data-type-type-text',
+					fieldStatusId: 'happ-forms-field-status-active',
+					dataTypeId: 'happ-data-type-text',
 					name: fieldName,
 					description: 'Automatically created field during search.',
 				});

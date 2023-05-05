@@ -8,6 +8,9 @@ import { FormFormOptionService } from './form-form-option.service';
 
 @Controller()
 export class FormFormOptionTcpController extends BindTcpController {
+	protected readonly mainRelationColumnName: string = 'formId';
+	protected readonly optionRelationColumnName: string = 'formOptionId';
+
 	constructor(
 		protected service: FormFormOptionService,
 	) {
