@@ -7,6 +7,8 @@ import { FormFormOption } from '../form-form-option/form-form-option.entity';
 
 @Entity()
 export class FormOption extends Option {
-	@OneToMany(() => FormFormOption, (formFormOption) => formFormOption.formOption)
+	@OneToMany(() => FormFormOption, (formFormOption) => formFormOption.formOption, {
+		cascade: true,
+	})
 	public formFormOptions: FormFormOption[];
 }

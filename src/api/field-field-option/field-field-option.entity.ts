@@ -14,15 +14,23 @@ export class FieldFieldOption extends Bind {
 	@Column()
 	public fieldOptionId: string;
 
-	@ManyToOne(() => FieldOption, (fieldOption) => fieldOption.fieldFieldOptions)
+	@ManyToOne(() => FieldOption, (fieldOption) => fieldOption.fieldFieldOptions, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public fieldOption: FieldOption;
 
 	@Column()
 	public fieldId: string;
 
-	@ManyToOne(() => Field, (field) => field.fieldFieldOptions)
+	@ManyToOne(() => Field, (field) => field.fieldFieldOptions, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public field: Field;
 
-	@OneToMany(() => FieldFieldFieldOption, (fieldFieldFieldOption) => fieldFieldFieldOption.fieldFieldOption)
+	@OneToMany(() => FieldFieldFieldOption, (fieldFieldFieldOption) => fieldFieldFieldOption.fieldFieldOption, {
+		cascade: true,
+	})
 	public fieldFieldFieldOptions: FieldFieldFieldOption[];
 }

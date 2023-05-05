@@ -14,15 +14,23 @@ export class FormFormOption extends Bind {
 	@Column()
 	public formOptionId: string;
 
-	@ManyToOne(() => FormOption, (formOption) => formOption.formFormOptions)
+	@ManyToOne(() => FormOption, (formOption) => formOption.formFormOptions, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public formOption: FormOption;
 
 	@Column()
 	public formId: string;
 
-	@ManyToOne(() => Form, (form) => form.formFormOptions)
+	@ManyToOne(() => Form, (form) => form.formFormOptions, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public form: Form;
 
-	@OneToMany(() => FormFormFormOption, (formFormFormOption) => formFormFormOption.formFormOption)
+	@OneToMany(() => FormFormFormOption, (formFormFormOption) => formFormFormOption.formFormOption, {
+		cascade: true,
+	})
 	public formFormFormOptions: FormFormFormOption[];
 }

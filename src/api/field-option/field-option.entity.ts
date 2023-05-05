@@ -7,6 +7,8 @@ import { FieldFieldOption } from '../field-field-option/field-field-option.entit
 
 @Entity()
 export class FieldOption extends Option {
-	@OneToMany(() => FieldFieldOption, (fieldFieldOption) => fieldFieldOption.fieldOption)
+	@OneToMany(() => FieldFieldOption, (fieldFieldOption) => fieldFieldOption.fieldOption, {
+		cascade: true,
+	})
 	public fieldFieldOptions: FieldFieldOption[];
 }

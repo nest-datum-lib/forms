@@ -61,15 +61,23 @@ export class Field {
 	})
 	public updatedAt: Date;
 
-	@OneToMany(() => FieldFieldOption, (fieldFieldOption) => fieldFieldOption.field)
+	@OneToMany(() => FieldFieldOption, (fieldFieldOption) => fieldFieldOption.field, {
+		cascade: true,
+	})
 	public fieldFieldOptions: FieldFieldOption[];
 
-	@OneToMany(() => FieldFieldFieldOption, (fieldFieldFieldOption) => fieldFieldFieldOption.field)
+	@OneToMany(() => FieldFieldFieldOption, (fieldFieldFieldOption) => fieldFieldFieldOption.field, {
+		cascade: true,
+	})
 	public fieldFieldFieldOptions: FieldFieldFieldOption[];
 
-	@OneToMany(() => FormField, (formField) => formField.field)
+	@OneToMany(() => FormField, (formField) => formField.field, {
+		cascade: true,
+	})
 	public formFields: FormField[];
 
-	@OneToMany(() => FieldContent, (fieldContent) => fieldContent.field)
+	@OneToMany(() => FieldContent, (fieldContent) => fieldContent.field, {
+		cascade: true,
+	})
 	public fieldContents: FieldContent[];
 }

@@ -21,13 +21,19 @@ export class FieldContent {
 	@Column({ default: '' })
 	public fieldId: string;
 
-	@ManyToOne(() => Field, (field) => field.fieldContents)
+	@ManyToOne(() => Field, (field) => field.fieldContents, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public field: Field;
 
 	@Column({ default: '' })
 	public contentId: string;
 
-	@ManyToOne(() => Content, (content) => content.fieldContents)
+	@ManyToOne(() => Content, (content) => content.fieldContents, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public content: Content;
 
 	@Column('text')

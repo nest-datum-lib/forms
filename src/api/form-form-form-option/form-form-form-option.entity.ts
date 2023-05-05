@@ -13,13 +13,17 @@ export class FormFormFormOption extends Many {
 	public formFormOptionId: string;
 
 	@ManyToOne(() => FormFormOption, (formFormOption) => formFormOption.formFormFormOptions, {
-		onDelete: 'CASCADE'
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
 	})
 	public formFormOption: FormFormOption;
 
 	@Column()
 	public formId: string;
 
-	@ManyToOne(() => Form, (form) => form.formFormFormOptions)
+	@ManyToOne(() => Form, (form) => form.formFormFormOptions, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public form: Form;
 }

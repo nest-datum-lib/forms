@@ -20,13 +20,19 @@ export class FormField {
 	@Column()
 	public formId: string;
 
-	@ManyToOne(() => Form, (form) => form.formFields)
+	@ManyToOne(() => Form, (form) => form.formFields, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public form: Form;
 
 	@Column()
 	public fieldId: string;
 
-	@ManyToOne(() => Field, (field) => field.formFields)
+	@ManyToOne(() => Field, (field) => field.formFields, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public field: Field;
 
 	@CreateDateColumn({ 

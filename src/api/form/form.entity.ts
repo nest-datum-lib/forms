@@ -57,15 +57,23 @@ export class Form {
 	})
 	public updatedAt: Date;
 
-	@OneToMany(() => FormFormOption, (formFormOption) => formFormOption.form)
+	@OneToMany(() => FormFormOption, (formFormOption) => formFormOption.form, {
+		cascade: true,
+	})
 	public formFormOptions: FormFormOption[];
 
-	@OneToMany(() => FormFormFormOption, (formFormFormOption) => formFormFormOption.form)
+	@OneToMany(() => FormFormFormOption, (formFormFormOption) => formFormFormOption.form, {
+		cascade: true,
+	})
 	public formFormFormOptions: FormFormFormOption[];
 
-	@OneToMany(() => FormField, (formField) => formField.form)
+	@OneToMany(() => FormField, (formField) => formField.form, {
+		cascade: true,
+	})
 	public formFields: FormField[];
 
-	@OneToMany(() => Content, (content) => content.form)
+	@OneToMany(() => Content, (content) => content.form, {
+		cascade: true,
+	})
 	public contents: Content[];
 }

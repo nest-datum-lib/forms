@@ -21,7 +21,10 @@ export class Content {
 	@Column({ default: '' })
 	public formId: string;
 
-	@ManyToOne(() => Form, (form) => form.contents)
+	@ManyToOne(() => Form, (form) => form.contents, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public form: Form;
 
 	@Column({ default: '' })
@@ -48,6 +51,8 @@ export class Content {
 	})
 	public updatedAt: Date;
 
-	@OneToMany(() => FieldContent, (fieldContent) => fieldContent.content)
+	@OneToMany(() => FieldContent, (fieldContent) => fieldContent.content, {
+		cascade: true,
+	})
 	public fieldContents: FieldContent[];
 }

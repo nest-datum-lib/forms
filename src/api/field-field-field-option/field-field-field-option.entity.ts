@@ -13,13 +13,17 @@ export class FieldFieldFieldOption extends Many {
 	public fieldFieldOptionId: string;
 
 	@ManyToOne(() => FieldFieldOption, (fieldFieldOption) => fieldFieldOption.fieldFieldFieldOptions, {
-		onDelete: 'CASCADE'
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
 	})
 	public fieldFieldOption: FieldFieldOption;
 
 	@Column()
 	public fieldId: string;
 
-	@ManyToOne(() => Field, (field) => field.fieldFieldFieldOptions)
+	@ManyToOne(() => Field, (field) => field.fieldFieldFieldOptions, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
 	public field: Field;
 }
