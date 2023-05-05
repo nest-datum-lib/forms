@@ -27,20 +27,18 @@ export class BindHttpTcpController extends HttpTcpController {
 		}
 		const user = getUser(options['accessToken']);
 
-		console.log('options', options, this.mainRelationColumnName, this.optionRelationColumnName);
-
-		if (!utilsCheckStrId(options[this.mainRelationColumnName ?? 'entityId'])) {
+		if (!utilsCheckStrId(options[this.mainRelationColumnName])) {
 			throw new MethodNotAllowedException(`Property "entityId" is not valid.`);
 		}
-		if (!utilsCheckStrId(options[this.optionRelationColumnName ?? 'entityOptionId'])) {
+		if (!utilsCheckStrId(options[this.optionRelationColumnName])) {
 			throw new MethodNotAllowedException(`Property "entityOptionId" is not valid.`);
 		}
 
 		return {
 			accessToken: options['accessToken'],
 			userId: user['id'],
-			[this.mainRelationColumnName ?? 'entityId']: options[this.mainRelationColumnName ?? 'entityId'],
-			[this.optionRelationColumnName ?? 'entityOptionId']: options[this.optionRelationColumnName ?? 'entityOptionId'],
+			[this.mainRelationColumnName]: options[this.mainRelationColumnName],
+			[this.optionRelationColumnName]: options[this.optionRelationColumnName],
 		};
 	}
 
