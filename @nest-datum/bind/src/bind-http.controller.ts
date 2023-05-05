@@ -32,4 +32,20 @@ export class BindHttpController extends HttpController {
 			[this.optionRelationColumnName ?? 'entityOptionId']: options[this.optionRelationColumnName ?? 'entityOptionId'],
 		};
 	}
+
+	@Post(':id')
+	async create(
+		@AccessToken() accessToken: string,
+		@Param('id') entityOptionId: string,
+		@Body() data,
+	) {
+		const dataKeys = Object.keys(data);
+		const entityId = data[dataKeys[0]];
+
+		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
+			accessToken,
+			entityId,
+			entityOptionId,
+		})));
+	}
 }
