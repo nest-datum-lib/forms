@@ -255,7 +255,12 @@ export class SqlService extends ModelService {
 				return cachedData;
 			}
 		}
+		console.log('processedPayload', processedPayload);
+
 		const condition = await this.findMany(processedPayload);
+
+		console.log('condition', condition);
+		
 		const output = await this.repository.findAndCount(condition);
 
 		if (this.withCache === true) {
