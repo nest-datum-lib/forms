@@ -28,6 +28,7 @@ export class ContentService extends SqlService {
 			userId: true,
 			contentStatusId: true,
 			formId: true,
+			isNotDelete: true,
 		};
 	}
 
@@ -37,6 +38,7 @@ export class ContentService extends SqlService {
 			userId: true,
 			contentStatusId: true,
 			formId: true,
+			isNotDelete: true,
 		};
 	}
 
@@ -46,6 +48,7 @@ export class ContentService extends SqlService {
 			userId: true,
 			contentStatusId: true,
 			formId: true,
+			isNotDelete: true,
 		};
 	}
 }
