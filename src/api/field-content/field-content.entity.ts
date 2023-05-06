@@ -37,7 +37,7 @@ export class FieldContent {
 	public content: Content;
 
 	@Column('text')
-	public value: string;
+	public value: string = '';
 
 	@CreateDateColumn({ 
 		type: 'timestamp', 
