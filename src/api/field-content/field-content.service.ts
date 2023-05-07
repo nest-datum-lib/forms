@@ -105,8 +105,6 @@ export class FieldContentService extends BindService {
 	protected async createProperties(payload: object): Promise<any> {
 		const processedPayload = await super.createProperties(payload);
 
-		console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', processedPayload);
-
 		if (utilsCheckStrName(processedPayload['fieldName'])
 			&& !utilsCheckStrId(processedPayload['fieldId'])) {
 			const fieldId = await this.getFieldByName(processedPayload['fieldName'], processedPayload['contentId']);
@@ -116,8 +114,6 @@ export class FieldContentService extends BindService {
 				fieldId,
 			};
 		}
-		console.log('???????????????????????', processedPayload);
-
 		return processedPayload;
 	}
 }
