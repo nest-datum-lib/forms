@@ -34,11 +34,29 @@ export class FieldContentService extends BindService {
 		super();
 	}
 
-	protected manyGetColumns(customColumns: object = {}) {
-		return ({
-			...super.manyGetColumns(),
+	protected manyGetColumns(customColumns: object = {}): object {
+		return {
+			...super.manyGetColumns(customColumns),
+			fieldId: true,
+			contentId: true,
 			value: true,
-		});
+		};
+	}
+
+	protected manyGetQueryColumns(customColumns: object = {}): object {
+		return {
+			...super.manyGetQueryColumns(customColumns),
+			value: true,
+		};
+	}
+
+	protected oneGetColumns(customColumns: object = {}): object {
+		return {
+			...super.oneGetColumns(customColumns),
+			fieldId: true,
+			contentId: true,
+			value: true,
+		};
 	}
 
 	protected async getFieldByName(fieldName: string, contentId: string): Promise<any> {
