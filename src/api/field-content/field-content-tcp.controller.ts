@@ -3,6 +3,9 @@ import {
 	EventPattern, 
 } from '@nestjs/microservices';
 import { Controller } from '@nestjs/common';
+import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
+import { AccessToken } from '@nest-datum-common/decorators';
+import { exists as utilsCheckExists } from '@nest-datum-utils/check';
 import { BindTcpController } from '@nest-datum/bind';
 import { FieldContentService } from './field-content.service';
 
@@ -15,6 +18,16 @@ export class FieldContentTcpController extends BindTcpController {
 		protected service: FieldContentService,
 	) {
 		super();
+	}
+
+	async validateCreate(options) {
+		if (!utilsCheckExists(options['value'])) {
+			throw new MethodNotAllowedException(`Property "value" is not valid.`);
+		}
+		return {
+			value: options['value'],
+			...await super.validateCreate(options),
+		};
 	}
 
 	@MessagePattern({ cmd: 'fieldContent.many' })
