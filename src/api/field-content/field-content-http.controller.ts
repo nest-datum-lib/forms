@@ -18,6 +18,12 @@ import { FieldContentService } from './field-content.service';
 export class FieldContentHttpController extends BindHttpController {
 	protected readonly mainRelationColumnName: string = 'contentId';
 	protected readonly optionRelationColumnName: string = 'fieldId';
+
+	constructor(
+		protected service: FieldContentService,
+	) {
+		super();
+	}
 	
 	async validateCreate(options) {
 		if (!utilsCheckExists(options['value'])) {
