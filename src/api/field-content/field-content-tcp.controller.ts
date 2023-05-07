@@ -77,7 +77,7 @@ export class FieldContentTcpController extends BindTcpController {
 	}
 
 	@EventPattern('fieldContent.update')
-	async create(payload) {
+	async update(payload) {
 		return await super.create(payload);
 	}
 }
