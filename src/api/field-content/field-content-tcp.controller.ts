@@ -19,6 +19,8 @@ export class FieldContentTcpController extends BindTcpController {
 
 	@MessagePattern({ cmd: 'fieldContent.many' })
 	async many(payload) {
+		console.log('payload', payload);
+
 		return await super.many(payload);
 	}
 
