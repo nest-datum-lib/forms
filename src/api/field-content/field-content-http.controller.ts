@@ -73,7 +73,7 @@ export class FieldContentHttpController extends BindHttpController {
 		@Param('id') id: string,
 		@Body() body,
 	) {
-		return await this.serviceHandlerWrapper(async () => await this.service.udpate(await this.validateUpdate({
+		return await this.serviceHandlerWrapper(async () => await this.service.update(await this.validateUpdate({
 			accessToken,
 			id,
 			value: body['value'],
