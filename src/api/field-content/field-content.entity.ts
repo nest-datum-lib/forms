@@ -39,7 +39,7 @@ export class FieldContent {
 	@Column('text', {
 		nullable: true,
 	})
-	public value: string = '';
+	public value: string;
 
 	@CreateDateColumn({ 
 		type: 'timestamp', 
