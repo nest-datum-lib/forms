@@ -26,6 +26,13 @@ export class BindTcpController extends TcpController {
 			throw new MethodNotAllowedException(`Property "${this.optionRelationColumnName}" is not valid.`);
 		}
 
+		console.log('>>>>>>>', {
+			accessToken: options['accessToken'],
+			userId: user['id'],
+			[this.mainRelationColumnName]: options[this.mainRelationColumnName],
+			[this.optionRelationColumnName]: options[this.optionRelationColumnName],
+		});
+
 		return {
 			accessToken: options['accessToken'],
 			userId: user['id'],
