@@ -328,8 +328,6 @@ export class SqlService extends ModelService {
 	}
 
 	protected async createProcess(processedPayload: object, payload: object): Promise<object> {
-		console.log('processedPayload', processedPayload, payload);
-
 		try {
 			if (this.withCache === true) {
 				this.repositoryCache.drop({ key: [ this.prefix(), 'many', '*' ] });
