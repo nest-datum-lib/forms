@@ -4,8 +4,8 @@ import { FieldContentService } from './field-content.service';
 
 @Controller(`${process.env.SERVICE_FORMS}/field/content`)
 export class FieldContentHttpController extends BindHttpController {
-	protected readonly mainRelationColumnName: string = 'fieldId';
-	protected readonly optionRelationColumnName: string = 'contentId';
+	protected readonly mainRelationColumnName: string = 'contentId';
+	protected readonly optionRelationColumnName: string = 'fieldId';
 	
 	constructor(
 		protected service: FieldContentService,
