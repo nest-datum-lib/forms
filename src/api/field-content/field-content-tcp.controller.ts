@@ -39,8 +39,6 @@ export class FieldContentTcpController extends BindTcpController {
 
 	@EventPattern('fieldContent.create')
 	async create(payload) {
-		console.log('payload', payload);
-
 		return await super.create(payload);
 	}
 }
