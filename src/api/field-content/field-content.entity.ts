@@ -36,11 +36,10 @@ export class FieldContent {
 	})
 	public content: Content;
 
-	@Column({
-		type: 'text',
-		default: '',
+	@Column('text', {
+		nullable: true,
 	})
-	public value: string;
+	public value: string = '';
 
 	@CreateDateColumn({ 
 		type: 'timestamp', 
