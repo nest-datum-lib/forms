@@ -29,8 +29,26 @@ export class FieldContentHttpTcpController extends BindHttpTcpController {
 			throw new MethodNotAllowedException(`Property "value" is not valid.`);
 		}
 		return {
-			value: options['value'],
 			...await super.validateCreate(options),
+			value: String(options['value']),
+		};
+	}
+
+	async validateUpdate(options) {
+		if (!utilsCheckExists(options['value'])) {
+			throw new MethodNotAllowedException(`Property "value" is not valid.`);
+		}
+		if (!utilsCheckStrIdExists(options['fieldId'])) {
+			throw new MethodNotAllowedException(`Property "fieldId" is not valid.`);
+		}
+		if (!utilsCheckStrIdExists(options['contentId'])) {
+			throw new MethodNotAllowedException(`Property "contentId" is not valid.`);
+		}
+		return {
+			...await super.validateUpdate(options),
+			fieldId: options['fieldId'],
+			contentId: options['contentId'],
+			value: String(options['value']),
 		};
 	}
 
@@ -48,6 +66,24 @@ export class FieldContentHttpTcpController extends BindHttpTcpController {
 			value: body['value'],
 			[this.mainRelationColumnName]: entityId,
 			[this.optionRelationColumnName]: body['fieldId'],
+		})));
+	}
+
+	@Patch(':id')
+	async update(
+		@AccessToken() accessToken: string,
+		@Param('id') id: string,
+		@Body() body,
+	) {
+		return await this.serviceHandlerWrapper(async () => await this.transport.send({
+			name: this.serviceName, 
+			cmd: `${this.entityName}.update`,
+		}, await this.validateUpdate({
+			accessToken,
+			id,
+			value: body['value'],
+			fieldId: body['fieldId'],
+			contentId: body['contentId'],
 		})));
 	}
 }
