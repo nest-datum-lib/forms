@@ -25,6 +25,8 @@ export class FieldHttpTcpController extends MainHttpTcpController {
 	protected readonly serviceName: string = process.env.SERVICE_FORMS;
 	protected readonly entityName: string = 'field';
 	protected readonly entityManyName: string = 'fieldOptionRelation';
+	protected readonly mainRelationColumnName: string = 'fieldId';
+	protected readonly optionRelationColumnName: string = 'fieldOptionId';
 
 	constructor(
 		protected transport: TransportService,

@@ -26,6 +26,8 @@ export class FormHttpTcpController extends MainHttpTcpController {
 	protected readonly serviceName: string = process.env.SERVICE_FORMS;
 	protected readonly entityName: string = 'form';
 	protected readonly entityManyName: string = 'formOptionRelation';
+	protected readonly mainRelationColumnName: string = 'formId';
+	protected readonly optionRelationColumnName: string = 'formOptionId';
 
 	constructor(
 		protected transport: TransportService,
