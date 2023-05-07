@@ -5,7 +5,10 @@ import {
 import { Controller } from '@nestjs/common';
 import { MethodNotAllowedException } from '@nest-datum-common/exceptions';
 import { AccessToken } from '@nest-datum-common/decorators';
-import { exists as utilsCheckExists } from '@nest-datum-utils/check';
+import { 
+	exists as utilsCheckExists,
+	strIdExists as utilsCheckStrIdExists, 
+} from '@nest-datum-utils/check';
 import { BindTcpController } from '@nest-datum/bind';
 import { FieldContentService } from './field-content.service';
 
@@ -25,8 +28,26 @@ export class FieldContentTcpController extends BindTcpController {
 			throw new MethodNotAllowedException(`Property "value" is not valid.`);
 		}
 		return {
-			value: options['value'],
 			...await super.validateCreate(options),
+			value: String(options['value']),
+		};
+	}
+
+	async validateUpdate(options) {
+		if (!utilsCheckExists(options['value'])) {
+			throw new MethodNotAllowedException(`Property "value" is not valid.`);
+		}
+		if (!utilsCheckStrIdExists(options['fieldId'])) {
+			throw new MethodNotAllowedException(`Property "fieldId" is not valid.`);
+		}
+		if (!utilsCheckStrIdExists(options['contentId'])) {
+			throw new MethodNotAllowedException(`Property "contentId" is not valid.`);
+		}
+		return {
+			...await super.validateUpdate(options),
+			fieldId: options['fieldId'],
+			contentId: options['contentId'],
+			value: String(options['value']),
 		};
 	}
 
@@ -51,6 +72,11 @@ export class FieldContentTcpController extends BindTcpController {
 	}
 
 	@EventPattern('fieldContent.create')
+	async create(payload) {
+		return await super.create(payload);
+	}
+
+	@EventPattern('fieldContent.update')
 	async create(payload) {
 		return await super.create(payload);
 	}
