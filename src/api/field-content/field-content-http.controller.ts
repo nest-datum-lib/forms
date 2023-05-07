@@ -25,7 +25,7 @@ export class FieldContentHttpController extends BindHttpController {
 		}
 		return {
 			...await super.validateCreate(options),
-			value: String(options['value']),
+			value: options['value'] ?? '',
 		};
 	}
 
@@ -43,7 +43,7 @@ export class FieldContentHttpController extends BindHttpController {
 			...await super.validateUpdate(options),
 			fieldId: options['fieldId'],
 			contentId: options['contentId'],
-			value: String(options['value']),
+			value: options['value'] ?? '',
 		};
 	}
 

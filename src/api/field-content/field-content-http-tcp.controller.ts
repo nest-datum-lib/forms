@@ -33,7 +33,7 @@ export class FieldContentHttpTcpController extends BindHttpTcpController {
 		}
 		return {
 			...await super.validateCreate(options),
-			value: String(options['value']),
+			value: options['value'] ?? '',
 		};
 	}
 
@@ -51,7 +51,7 @@ export class FieldContentHttpTcpController extends BindHttpTcpController {
 			...await super.validateUpdate(options),
 			fieldId: options['fieldId'],
 			contentId: options['contentId'],
-			value: String(options['value']),
+			value: options['value'] ?? '',
 		};
 	}
 
