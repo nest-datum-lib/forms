@@ -37,8 +37,6 @@ export class FieldContentTcpController extends BindTcpController {
 
 	@MessagePattern({ cmd: 'fieldContent.one' })
 	async one(payload) {
-		console.log('????????????????', payload);
-
 		return await super.one(payload);
 	}
 
