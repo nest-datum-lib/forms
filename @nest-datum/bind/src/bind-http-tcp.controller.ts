@@ -54,7 +54,7 @@ export class BindHttpTcpController extends HttpTcpController {
 			cmd: `${this.entityName}.create`,
 		}, await this.validateCreate({
 			[this.mainRelationColumnName]: entityId,
-			[this.optionRelationColumnName]: data[this.optionRelationColumnName],
+			[this.optionRelationColumnName]: body[this.optionRelationColumnName],
 		})));
 	}
 
@@ -70,8 +70,8 @@ export class BindHttpTcpController extends HttpTcpController {
 		}, await this.validateUpdate({
 			accessToken,
 			id,
-			[this.mainRelationColumnName]: data[this.mainRelationColumnName],
-			[this.optionRelationColumnName]: data[this.optionRelationColumnName],
+			[this.mainRelationColumnName]: body[this.mainRelationColumnName],
+			[this.optionRelationColumnName]: body[this.optionRelationColumnName],
 		})));
 	}
 }

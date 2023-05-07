@@ -9,7 +9,10 @@ import { Controller } from '@nestjs/common';
 import { AccessToken } from '@nest-datum-common/decorators';
 import { BindHttpTcpController } from '@nest-datum/bind';
 import { TransportService } from '@nest-datum/transport';
-import { exists as utilsCheckExists } from '@nest-datum-utils/check';
+import { 
+	exists as utilsCheckExists,
+	strIdExists as utilsCheckStrIdExists, 
+} from '@nest-datum-utils/check';
 
 @Controller(`${process.env.SERVICE_FORMS}/field/content`)
 export class FieldContentHttpTcpController extends BindHttpTcpController {

@@ -47,12 +47,12 @@ export class BindHttpController extends HttpController {
 	async create(
 		@AccessToken() accessToken: string,
 		@Param('id') entityId: string,
-		@Body() data,
+		@Body() body,
 	) {
 		return await this.serviceHandlerWrapper(async () => await this.service.create(await this.validateCreate({
 			accessToken,
 			[this.mainRelationColumnName]: entityId,
-			[this.optionRelationColumnName]: data[this.optionRelationColumnName],
+			[this.optionRelationColumnName]: body[this.optionRelationColumnName],
 		})));
 	}
 
@@ -60,13 +60,13 @@ export class BindHttpController extends HttpController {
 	async update(
 		@AccessToken() accessToken: string,
 		@Param('id') id: string,
-		@Body() data,
+		@Body() body,
 	) {
 		return await this.serviceHandlerWrapper(async () => await this.service.udpate(await this.validateUpdate({
 			accessToken,
 			id,
-			[this.mainRelationColumnName]: data[this.mainRelationColumnName],
-			[this.optionRelationColumnName]: data[this.optionRelationColumnName],
+			[this.mainRelationColumnName]: body[this.mainRelationColumnName],
+			[this.optionRelationColumnName]: body[this.optionRelationColumnName],
 		})));
 	}
 }
