@@ -113,9 +113,9 @@ export class FieldContentService extends BindService {
 					fieldId: field['id'],
 				});
 
-			this.repositoryCache.drop({ key: [ this.prefix(), 'field', '*' ] });
-			this.repositoryCache.drop({ key: [ this.prefix(), 'formField', '*' ] });
-			this.repositoryCache.drop({ key: [ this.prefix(), 'content', '*' ] });
+			this.repositoryCache.drop({ key: [ this.prefix(process.env.APP_NAME), 'field', '*' ] });
+			this.repositoryCache.drop({ key: [ this.prefix(process.env.APP_NAME), 'formField', '*' ] });
+			this.repositoryCache.drop({ key: [ this.prefix(process.env.APP_NAME), 'content', '*' ] });
 		}
 		return ({ ...(field || {}) })['id'];
 	}
