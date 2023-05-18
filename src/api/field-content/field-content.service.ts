@@ -148,7 +148,7 @@ export class FieldContentService extends BindService {
 				\`createdAt\`,
 				\`updatedAt\`,
 				COUNT(\`value\`) as \`length\`,
-				COUNT(\`id\`) as \`total\`
+				COUNT(*) as \`total\`
 			FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
