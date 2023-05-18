@@ -30,6 +30,7 @@ export class ContentTcpController extends TcpController {
 		if (!utilsCheckStrId(options['formId'])) {
 			throw new MethodNotAllowedException(`Property "formId" is not valid.`);
 		}
+		console.log('0000', await this.validateUpdate(options));
 		return await this.validateUpdate(options);
 	}
 
@@ -54,6 +55,10 @@ export class ContentTcpController extends TcpController {
 			}
 			output['contentStatusId'] = options['contentStatusId'];
 		}
+		console.log('1111111', {
+			...await super.validateUpdate(options),
+			...output,
+		});
 		return {
 			...await super.validateUpdate(options),
 			...output,
@@ -82,6 +87,8 @@ export class ContentTcpController extends TcpController {
 
 	@EventPattern('content.create')
 	async create(payload: object = {}) {
+		console.log('>>>>>>>>>', payload);
+
 		return await super.create(payload);
 	}
 

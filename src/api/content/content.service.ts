@@ -51,4 +51,10 @@ export class ContentService extends SqlService {
 			isNotDelete: true,
 		};
 	}
+
+	// protected async createBefore(payload): Promise<any> {
+	// 	this.repository.drop({ formId: payload['formId'], userId: payload['userId'] });
+
+	// 	return await super.createBefore(payload);
+	// }
 }
