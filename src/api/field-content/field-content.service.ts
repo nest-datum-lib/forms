@@ -167,12 +167,11 @@ export class FieldContentService extends BindService {
 				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
 					? ``
 					: '20'}`
-				: ''}
-			${processedPayload['limit']
-				? (processedPayload['page']
-					? `,${processedPayload['limit']}`
-					: `LIMIT ${processedPayload['limit']}`)
-				: ''}`);
+				: ''}${processedPayload['limit']
+					? (processedPayload['page']
+						? `,${processedPayload['limit']}`
+						: `LIMIT ${processedPayload['limit']}`)
+					: ''}`);
 
 		return await super.manyProcess(processedPayload, payload);
 
