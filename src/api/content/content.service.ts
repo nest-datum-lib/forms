@@ -71,8 +71,6 @@ export class ContentService extends PrimaryService {
 				fieldContents = contents[i]['fieldContents'];
 
 			while (ii < fieldContents.length) {
-				console.log('fieldContents[ii]', fieldContents[ii]);
-
 				await this.fieldContentRepository.delete({ id: fieldContents[ii]['id'] });
 				ii++;
 			}
