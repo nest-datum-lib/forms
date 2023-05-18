@@ -136,8 +136,12 @@ export class FieldContentService extends BindService {
 	}
 
 	protected async manyProcess(processedPayload: object, payload: object): Promise<Array<Array<any> | number>> {
-		const filterKeys = Object.keys(processedPayload['filter']);
-		const sortKeys = Object.keys(processedPayload['sort']);
+		const isUnique = (processedPayload['filter'] || {})['isUnique'];
+
+		delete processedPayload['filter']['isUnique'];
+
+		const filterKeys = Object.keys(processedPayload['filter'] || {});
+		const sortKeys = Object.keys(processedPayload['sort'] || {});
 		const requestData = await this.connection.query(`SELECT
 				\`id\`,
 				\`userId\`,
@@ -145,42 +149,13 @@ export class FieldContentService extends BindService {
 				\`contentId\`,
 				\`value\`,
 				\`createdAt\`,
-				\`updatedAt\`,
-				COUNT(\`value\`) as \`length\`
+				\`updatedAt\`
+				${isUnique ? `,COUNT(\`value\`) as \`length\`` : ''}
 			FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
-			GROUP BY \`value\`
-			HAVING \`length\` = 1
-			${sortKeys.length > 0
-				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
-				: ''}
-			${processedPayload['page']
-				? `LIMIT ${processedPayload['page'] - 1}${processedPayload['limit']
-					? ``
-					: ',20'}`
-				: ''}${processedPayload['limit']
-					? (processedPayload['page']
-						? `,${processedPayload['limit']}`
-						: `LIMIT ${processedPayload['limit']}`)
-					: ''};`);
-
-		console.log('>>>>>>>', `SELECT
-				\`id\`,
-				\`userId\`,
-				\`fieldId\`,
-				\`contentId\`,
-				\`value\`,
-				\`createdAt\`,
-				\`updatedAt\`,
-				COUNT(\`value\`) as \`length\`
-			FROM \`field_content\` 
-			${filterKeys.length > 0
-				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
-				: ''}
-			GROUP BY \`value\`
-			HAVING \`length\` = 1
+			${isUnique ? `GROUP BY \`value\` HAVING \`length\` = 1` : ''}
 			${sortKeys.length > 0
 				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
