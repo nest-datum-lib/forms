@@ -201,12 +201,7 @@ export class SqlService extends ModelService {
 	}
 
 	protected async findMany({ page = 1, limit = 20, query, filter, sort, relations }: { page?: number; limit?: number; query?: string; filter?: object; sort?: object; relations?: object }): Promise<any> {
-		console.log('relations', relations);
-
 		const relationsProcessed = this.relations(relations, filter);
-
-		console.log('relationsProcessed', relationsProcessed);
-
 		const whereProcessed = this.where(filter);
 		const order = this.order(sort);
 		let where;
@@ -253,8 +248,6 @@ export class SqlService extends ModelService {
 	}
 
 	protected async manyProcess(processedPayload: object, payload: object): Promise<Array<Array<any> | number>> {
-		console.log('processedPayload', processedPayload, payload);
-
 		if (this.withCache === true) {
 			const cachedData = await this.repositoryCache.one({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ] });
 
