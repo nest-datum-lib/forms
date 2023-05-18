@@ -8,10 +8,7 @@ import { TcpController } from '@nest-datum-common/controllers';
 import { 
 	exists as utilsCheckExists,
 	strId as utilsCheckStrId,
-	strDescription as utilsCheckStrDescription,
-	strFilled as utilsCheckStrFilled,
-	strEmail as utilsCheckStrEmail,
-	str as utilsCheckStr,
+	bool as utilsCheckBool,
 } from '@nest-datum-utils/check';
 import { ContentService } from './content.service';
 
@@ -30,7 +27,17 @@ export class ContentTcpController extends TcpController {
 		if (!utilsCheckStrId(options['formId'])) {
 			throw new MethodNotAllowedException(`Property "formId" is not valid.`);
 		}
-		return await this.validateUpdate(options);
+		if (utilsCheckExists(options['isPush'])) {
+			if (!utilsCheckBool(options['isPush'])) {
+				throw new MethodNotAllowedException(`Property "isPush" is not valid.`);
+			}
+			options['isPush'] = !!options['isPush'];
+		}
+		return await super.validateCreate({
+			isPush: options['isPush'],
+			contentStatusId: options['contentStatusId'],
+			formId: options['formId'],
+		});
 	}
 
 	async validateUpdate(options) {
