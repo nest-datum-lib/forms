@@ -9,6 +9,7 @@ import {
 	strId as utilsCheckStrId,
 	strName as utilsCheckStrName,
 	objQueryRunner as utilsCheckObjQueryRunner,
+	arrFilled as utilsCheckArrFilled,
 } from '@nest-datum-utils/check';
 import { NotFoundException } from '@nest-datum-common/exceptions';
 import { Content } from '../content/content.entity';
