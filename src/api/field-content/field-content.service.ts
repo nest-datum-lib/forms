@@ -138,7 +138,7 @@ export class FieldContentService extends BindService {
 	protected async manyProcess(processedPayload: object, payload: object): Promise<Array<Array<any> | number>> {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
-		const output = await this.connection.query(`SELECT
+		const requestData = await this.connection.query(`SELECT
 				\`id\`,
 				\`userId\`,
 				\`fieldId\`,
@@ -173,7 +173,7 @@ export class FieldContentService extends BindService {
 				return cachedData;
 			}
 		}
-		const output = [ output, output.length ];
+		const output = [ requestData, requestData.length ];
 
 		if (this.withCache === true) {
 			await this.repositoryCache.create({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ], output });
