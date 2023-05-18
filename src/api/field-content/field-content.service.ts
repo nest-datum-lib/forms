@@ -157,9 +157,9 @@ export class FieldContentService extends BindService {
 				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
 			${processedPayload['page']
-				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
+				? `LIMIT ${processedPayload['page'] - 1}${processedPayload['limit']
 					? ``
-					: '20'}`
+					: ',20'}`
 				: ''}${processedPayload['limit']
 					? (processedPayload['page']
 						? `,${processedPayload['limit']}`
@@ -185,9 +185,9 @@ export class FieldContentService extends BindService {
 				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
 			${processedPayload['page']
-				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
+				? `LIMIT ${processedPayload['page'] - 1}${processedPayload['limit']
 					? ``
-					: '20'}`
+					: ',20'}`
 				: ''}${processedPayload['limit']
 					? (processedPayload['page']
 						? `,${processedPayload['limit']}`
