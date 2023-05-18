@@ -156,7 +156,7 @@ export class FieldContentService extends BindService {
 		// 			? `,${processedPayload['limit']}`
 		// 			: `LIMIT ${processedPayload['limit']}`)
 		// 		: ''}`);
-		console.log('>>>>', `SELECT * FROM \`field_content\` 
+		console.log('>>>>', sortKeys, `SELECT * FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
