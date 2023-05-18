@@ -161,7 +161,7 @@ export class FieldContentService extends BindService {
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
 			${sortKeys.length > 0
-				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${sortKeys[key]}`).join(',')}`
+				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
 			${processedPayload['page']
 				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
