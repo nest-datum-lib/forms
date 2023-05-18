@@ -154,7 +154,7 @@ export class FieldContentService extends BindService {
 					? (processedPayload['page']
 						? `,${processedPayload['limit']}`
 						: `LIMIT ${processedPayload['limit']}`)
-					: ''};`, await this.connection.query(`SELECT * FROM \`field_content\` 
+					: ''};`, await this.connection.query(`SELECT DISTINCT value * FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
