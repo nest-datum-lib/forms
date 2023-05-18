@@ -27,6 +27,11 @@ export class FieldContentTcpController extends BindTcpController {
 		if (!utilsCheckExists(options['value'])) {
 			throw new MethodNotAllowedException(`Property "value" is not valid.`);
 		}
+		console.log('0000000', {
+			...await super.validateCreate(options),
+			value: options['value'] ?? '',
+		});
+
 		return {
 			...await super.validateCreate(options),
 			value: options['value'] ?? '',
@@ -43,6 +48,12 @@ export class FieldContentTcpController extends BindTcpController {
 		if (!utilsCheckStrIdExists(options['contentId'])) {
 			throw new MethodNotAllowedException(`Property "contentId" is not valid.`);
 		}
+		console.log('11111111', {
+			...await super.validateUpdate(options),
+			fieldId: options['fieldId'],
+			contentId: options['contentId'],
+			value: options['value'] ?? '',
+		});
 		return {
 			...await super.validateUpdate(options),
 			fieldId: options['fieldId'],
@@ -73,6 +84,8 @@ export class FieldContentTcpController extends BindTcpController {
 
 	@EventPattern('fieldContent.create')
 	async create(payload) {
+		console.log('????', payload);
+
 		return await super.create(payload);
 	}
 
