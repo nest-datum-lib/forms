@@ -165,6 +165,34 @@ export class FieldContentService extends BindService {
 						? `,${processedPayload['limit']}`
 						: `LIMIT ${processedPayload['limit']}`)
 					: ''};`);
+
+		console.log('>>>>>>>', `SELECT
+				\`id\`,
+				\`userId\`,
+				\`fieldId\`,
+				\`contentId\`,
+				\`value\`,
+				\`createdAt\`,
+				\`updatedAt\`,
+				COUNT(\`value\`) as \`length\`
+			FROM \`field_content\` 
+			${filterKeys.length > 0
+				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
+				: ''}
+			GROUP BY \`value\`
+			HAVING \`length\` = 1
+			${sortKeys.length > 0
+				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
+				: ''}
+			${processedPayload['page']
+				? `LIMIT ${processedPayload['page'] - 1}${processedPayload['limit']
+					? ``
+					: ',20'}`
+				: ''}${processedPayload['limit']
+					? (processedPayload['page']
+						? `,${processedPayload['limit']}`
+						: `LIMIT ${processedPayload['limit']}`)
+					: ''};`);
 		
 		return [ requestData, requestData.length ];;
 	}
