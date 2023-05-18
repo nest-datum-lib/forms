@@ -6,6 +6,7 @@ import {
 } from 'typeorm';
 import { PrimaryService } from '@nest-datum/primary';
 import { CacheService } from '@nest-datum/cache';
+import { FieldContent } from '../field-content/field-content.entity';
 import { Content } from './content.entity';
 
 @Injectable()
@@ -16,6 +17,7 @@ export class ContentService extends PrimaryService {
 
 	constructor(
 		@InjectRepository(Content) protected readonly repository: Repository<Content>,
+		@InjectRepository(FieldContent) protected readonly fieldContentRepository: Repository<FieldContent>,
 		protected readonly connection: Connection,
 		protected readonly repositoryCache: CacheService,
 	) {
@@ -62,6 +64,18 @@ export class ContentService extends PrimaryService {
 				userId: payload['userId'],
 			},
 		});
+		let i = 0;
+
+		while (i < contents.length) {
+			let ii = 0,
+				fieldContents = contents[i]['fieldContents'];
+
+			while (ii < fieldContents.length) {
+				await this.
+				ii++;
+			}
+			i++;
+		}
 
 		console.log('contentscontentscontents', contents);
 
