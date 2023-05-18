@@ -4,12 +4,12 @@ import {
 	Repository,
 	Connection, 
 } from 'typeorm';
-import { SqlService } from '@nest-datum/sql';
+import { PrimaryService } from '@nest-datum/primary';
 import { CacheService } from '@nest-datum/cache';
 import { Content } from './content.entity';
 
 @Injectable()
-export class ContentService extends SqlService {
+export class ContentService extends PrimaryService {
 	protected readonly withTwoStepRemoval: boolean = true;
 	protected readonly withEnvKey: boolean = false;
 	protected readonly repositoryConstructor = Content;
