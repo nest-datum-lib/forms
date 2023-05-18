@@ -138,8 +138,7 @@ export class FieldContentService extends BindService {
 	protected async manyProcess(processedPayload: object, payload: object): Promise<Array<Array<any> | number>> {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
-
-		console.log('>>>>', await this.connection.query(`SELECT
+		const output = await this.connection.query(`SELECT
 				\`id\`,
 				\`userId\`,
 				\`fieldId\`,
@@ -147,8 +146,7 @@ export class FieldContentService extends BindService {
 				\`value\`,
 				\`createdAt\`,
 				\`updatedAt\`,
-				COUNT(\`value\`) as \`length\`,
-				COUNT(*) as \`total\`
+				COUNT(\`value\`) as \`length\`
 			FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
@@ -166,9 +164,12 @@ export class FieldContentService extends BindService {
 					? (processedPayload['page']
 						? `,${processedPayload['limit']}`
 						: `LIMIT ${processedPayload['limit']}`)
-					: ''};`));
+					: ''};`);
 
-		return await super.manyProcess(processedPayload, payload);
+
+		const a = await super.manyProcess(processedPayload, payload);
+
+		console.log('aaaaaaaaaaaaaaaaaaa', a);
 
 		// if (this.withCache === true) {
 		// 	const cachedData = await this.repositoryCache.one({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ] });
@@ -179,10 +180,8 @@ export class FieldContentService extends BindService {
 		// }
 		// console.log('processedPayload', processedPayload, payload);
 
-		// // await this.connection.query(`SELECT * FROM field_content WHERE `);
-
 		// const condition = await this.findMany(processedPayload);
-		// const output = await this.repository.findAndCount(condition);
+		// const output = [  ];
 
 		// if (this.withCache === true) {
 		// 	await this.repositoryCache.create({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ], output });
