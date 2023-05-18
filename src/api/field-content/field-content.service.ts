@@ -134,4 +134,10 @@ export class FieldContentService extends BindService {
 		}
 		return processedPayload;
 	}
+
+	protected async createBefore(payload): Promise<any> {
+		this.contentRepository.drop({ formId: payload['formId'], userId: payload['userId'] });
+
+		return await super.createBefore(payload);
+	}
 }
