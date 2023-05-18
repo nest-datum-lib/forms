@@ -139,7 +139,7 @@ export class FieldContentService extends BindService {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
 
-		console.log('>>>>', sortKeys, `SELECT * FROM \`field_content\` 
+		console.log('>>>>', sortKeys, `SELECT DISTINCT value * FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
