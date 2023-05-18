@@ -134,4 +134,31 @@ export class FieldContentService extends BindService {
 		}
 		return processedPayload;
 	}
+
+	protected async manyProcess(processedPayload: object, payload: object): Promise<Array<Array<any> | number>> {
+		console.log('processedPayload', processedPayload, payload);
+
+		// await this.connection.query(`SELECT * FROM field_content WHERE `);
+
+		return await super.manyProcess(processedPayload, payload);
+
+		// if (this.withCache === true) {
+		// 	const cachedData = await this.repositoryCache.one({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ] });
+
+		// 	if (cachedData) {
+		// 		return cachedData;
+		// 	}
+		// }
+		// console.log('processedPayload', processedPayload, payload);
+
+		// // await this.connection.query(`SELECT * FROM field_content WHERE `);
+
+		// const condition = await this.findMany(processedPayload);
+		// const output = await this.repository.findAndCount(condition);
+
+		// if (this.withCache === true) {
+		// 	await this.repositoryCache.create({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ], output });
+		// }
+		// return output;
+	}
 }
