@@ -139,28 +139,24 @@ export class FieldContentService extends BindService {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
 
-		console.log('>>>>', sortKeys, `SELECT DISTINCT value * FROM \`field_content\` 
+		console.log('>>>>', await this.connection.query(`SELECT
+				\`id\`,
+				\`userId\`,
+				\`fieldId\`,
+				\`contentId\`,
+				\`value\`,
+				\`createdAt\`,
+				\`updatedAt\`,
+				COUNT(\`value\`) as \`length\`
+			FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
 			${sortKeys.length > 0
 				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
-			${processedPayload['page']
-				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
-					? ``
-					: '20'}`
-				: ''}${processedPayload['limit']
-					? (processedPayload['page']
-						? `,${processedPayload['limit']}`
-						: `LIMIT ${processedPayload['limit']}`)
-					: ''};`, await this.connection.query(`SELECT DISTINCT * FROM \`field_content\` 
-			${filterKeys.length > 0
-				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
-				: ''}
-			${sortKeys.length > 0
-				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
-				: ''}
+			GROUP BY \`value\`
+			HAVING \`length\` = 1
 			${processedPayload['page']
 				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
 					? ``
