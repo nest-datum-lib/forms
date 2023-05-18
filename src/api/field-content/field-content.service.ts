@@ -141,7 +141,7 @@ export class FieldContentService extends BindService {
 		delete (processedPayload['filter'] || {})['isUnique'];
 
 		if ((processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-experience-title') {
-			console.log('processedPayload', processedPayload, payload);
+			processedPayload['filter']['userId'] = processedPayload['userId'];
 		}
 		const filterKeys = Object.keys(processedPayload['filter'] || {});
 		const sortKeys = Object.keys(processedPayload['sort'] || {});
