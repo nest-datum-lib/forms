@@ -171,6 +171,8 @@ export class FieldContentService extends BindService {
 
 		console.log('aaaaaaaaaaaaaaaaaaa', a);
 
+		return a;
+
 		// if (this.withCache === true) {
 		// 	const cachedData = await this.repositoryCache.one({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ] });
 
