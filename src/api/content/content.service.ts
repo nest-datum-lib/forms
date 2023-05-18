@@ -53,7 +53,7 @@ export class ContentService extends SqlService {
 	}
 
 	protected async createBefore(payload): Promise<any> {
-		this.repository.delete({ formId: payload['formId'], userId: payload['userId'] });
+		await this.repository.delete({ formId: payload['formId'], userId: payload['userId'] });
 
 		return await super.createBefore(payload);
 	}
