@@ -53,7 +53,19 @@ export class ContentService extends PrimaryService {
 	}
 
 	protected async createBefore(payload): Promise<any> {
-		await this.repository.delete({ formId: payload['formId'], userId: payload['userId'] });
+		const contents = await this.repository.find({
+			relations: {
+				fieldContents: true,
+			},
+			where: {
+				formId: payload['formId'],
+				userId: payload['userId'],
+			},
+		});
+
+		console.log('contentscontentscontents', contents);
+
+		// await this.repository.delete({ formId: payload['formId'], userId: payload['userId'] });
 
 		return await super.createBefore(payload);
 	}
