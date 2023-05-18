@@ -11,6 +11,7 @@ import { HttpController } from '@nest-datum-common/controllers';
 import { 
 	exists as utilsCheckExists,
 	strId as utilsCheckStrId,
+	bool as utilsCheckBool,
 } from '@nest-datum-utils/check';
 import { ContentService } from './content.service';
 
@@ -29,12 +30,28 @@ export class ContentHttpController extends HttpController {
 		if (!utilsCheckStrId(options['formId'])) {
 			throw new MethodNotAllowedException(`Property "formId" is not valid.`);
 		}
-		return await super.validateCreate(options);
+		if (utilsCheckExists(options['isPush'])) {
+			if (!utilsCheckBool(options['isPush'])) {
+				throw new MethodNotAllowedException(`Property "isPush" is not valid.`);
+			}
+			options['isPush'] = !!options['isPush'];
+		}
+		return await super.validateCreate({
+			isPush: options['isPush'],
+			contentStatusId: options['contentStatusId'],
+			formId: options['formId'],
+		});
 	}
 
 	async validateUpdate(options) {
 		const output = {};
 
+		if (utilsCheckExists(options['userId'])) {
+			if (!utilsCheckStrId(options['userId'])) {
+				throw new MethodNotAllowedException(`Property "userId" is not valid.`);
+			}
+			output['userId'] = options['userId'];
+		}
 		if (utilsCheckExists(options['formId'])) {
 			if (!utilsCheckStrId(options['formId'])) {
 				throw new MethodNotAllowedException(`Property "formId" is not valid.`);
