@@ -138,8 +138,11 @@ export class FieldContentService extends BindService {
 	protected async manyProcess(processedPayload: object, payload: object): Promise<Array<Array<any> | number>> {
 		const isUnique = (processedPayload['filter'] || {})['isUnique'];
 
-		delete processedPayload['filter']['isUnique'];
+		delete (processedPayload['filter'] || {})['isUnique'];
 
+		if ((processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-experience-title') {
+			console.log('processedPayload', processedPayload, payload);
+		}
 		const filterKeys = Object.keys(processedPayload['filter'] || {});
 		const sortKeys = Object.keys(processedPayload['sort'] || {});
 		const requestData = await this.connection.query(`SELECT
