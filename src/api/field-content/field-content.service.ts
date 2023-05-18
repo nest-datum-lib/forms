@@ -140,7 +140,17 @@ export class FieldContentService extends BindService {
 
 		delete (processedPayload['filter'] || {})['isUnique'];
 
-		if ((processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-experience-title') {
+		if ((processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-experience-title'
+			|| (processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-experience-company'
+			|| (processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-achievemets'
+			|| (processedPayload['filter'] || {})['fieldId'] === 'happ-forms-field-experience-date') {
+			processedPayload['filter']['userId'] = processedPayload['userId'];
+		}
+		else if (utilsCheckArrFilled((processedPayload['filter'] || {})['fieldId'])
+			&& (processedPayload['filter']['fieldId'].includes('happ-forms-field-experience-title')
+				|| processedPayload['filter']['fieldId'].includes('happ-forms-field-experience-company')
+				|| processedPayload['filter']['fieldId'].includes('happ-forms-field-achievemets')
+				|| processedPayload['filter']['fieldId'].includes('happ-forms-field-experience-date'))) {
 			processedPayload['filter']['userId'] = processedPayload['userId'];
 		}
 		const filterKeys = Object.keys(processedPayload['filter'] || {});
@@ -156,7 +166,9 @@ export class FieldContentService extends BindService {
 				${isUnique ? `,COUNT(\`value\`) as \`length\`` : ''}
 			FROM \`field_content\` 
 			${filterKeys.length > 0
-				? `WHERE ${filterKeys.map((key) => `\`${key}\` = "${processedPayload['filter'][key]}"`).join('AND')}`
+				? `WHERE ${filterKeys.map((key) => utilsCheckArrFilled(processedPayload['filter'][key])
+					? `(${processedPayload['filter'][key].map((item) => `\`${key}\` = "${item}"`).join('OR')})`
+					: `\`${key}\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
 			${isUnique ? `GROUP BY \`value\` HAVING \`length\` = 1` : ''}
 			${sortKeys.length > 0
