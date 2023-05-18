@@ -55,28 +55,32 @@ export class ContentService extends PrimaryService {
 	}
 
 	protected async createBefore(payload): Promise<any> {
-		const contents = await this.repository.find({
-			relations: {
-				fieldContents: true,
-			},
-			where: {
-				formId: payload['formId'],
-				userId: payload['userId'],
-			},
-		});
-		let i = 0;
+		if (!payload['isPush']) {
+			const contents = await this.repository.find({
+				relations: {
+					fieldContents: true,
+				},
+				where: {
+					formId: payload['formId'],
+					userId: payload['userId'],
+				},
+			});
+			let i = 0;
 
-		while (i < contents.length) {
-			let ii = 0,
-				fieldContents = contents[i]['fieldContents'];
+			while (i < contents.length) {
+				let ii = 0,
+					fieldContents = contents[i]['fieldContents'];
 
-			while (ii < fieldContents.length) {
-				await this.fieldContentRepository.delete({ id: fieldContents[ii]['id'] });
-				ii++;
+				while (ii < fieldContents.length) {
+					await this.fieldContentRepository.delete({ id: fieldContents[ii]['id'] });
+					ii++;
+				}
+				await this.repository.delete({ id: contents[i]['id'] });
+				i++;
 			}
-			await this.repository.delete({ id: contents[i]['id'] });
-			i++;
 		}
+		delete payload['isPush'];
+
 		return await super.createBefore(payload);
 	}
 }
