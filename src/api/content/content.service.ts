@@ -71,15 +71,12 @@ export class ContentService extends PrimaryService {
 				fieldContents = contents[i]['fieldContents'];
 
 			while (ii < fieldContents.length) {
-				await this.
+				await this.fieldContentRepository.delete({ id: fieldContents[ii]['id'] });
 				ii++;
 			}
+			await this.repository.delete({ id: contents[i]['id'] });
 			i++;
 		}
-
-		console.log('contentscontentscontents', contents);
-
-		// await this.repository.delete({ formId: payload['formId'], userId: payload['userId'] });
 
 		return await super.createBefore(payload);
 	}
