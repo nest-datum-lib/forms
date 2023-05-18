@@ -139,23 +139,6 @@ export class FieldContentService extends BindService {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
 
-		// await this.connection.query(`SELECT * FROM \`field_content\` 
-		// 	${filterKeys.length > 0
-		// 		? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
-		// 		: ''}
-		// 	${sortKeys.length > 0
-		// 		? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${sortKeys[key]}`).join(',')}`
-		// 		: ''}
-		// 	${processedPayload['page']
-		// 		? `LIMIT ${processedPayload['page']}${processedPayload['limit']
-		// 			? ``
-		// 			: '20'}`
-		// 		: ''}
-		// 	${processedPayload['limit']
-		// 		? (processedPayload['page']
-		// 			? `,${processedPayload['limit']}`
-		// 			: `LIMIT ${processedPayload['limit']}`)
-		// 		: ''}`);
 		console.log('>>>>', sortKeys, `SELECT * FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
@@ -171,7 +154,22 @@ export class FieldContentService extends BindService {
 					? (processedPayload['page']
 						? `,${processedPayload['limit']}`
 						: `LIMIT ${processedPayload['limit']}`)
-					: ''}`);
+					: ''};`, await this.connection.query(`SELECT * FROM \`field_content\` 
+			${filterKeys.length > 0
+				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
+				: ''}
+			${sortKeys.length > 0
+				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
+				: ''}
+			${processedPayload['page']
+				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
+					? ``
+					: '20'}`
+				: ''}${processedPayload['limit']
+					? (processedPayload['page']
+						? `,${processedPayload['limit']}`
+						: `LIMIT ${processedPayload['limit']}`)
+					: ''};`));
 
 		return await super.manyProcess(processedPayload, payload);
 
