@@ -165,19 +165,7 @@ export class FieldContentService extends BindService {
 						? `,${processedPayload['limit']}`
 						: `LIMIT ${processedPayload['limit']}`)
 					: ''};`);
-
-		if (this.withCache === true) {
-			const cachedData = await this.repositoryCache.one({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ] });
-
-			if (cachedData) {
-				return cachedData;
-			}
-		}
-		const output = [ requestData, requestData.length ];
-
-		if (this.withCache === true) {
-			await this.repositoryCache.create({ key: [ this.prefix(process.env.APP_NAME), 'many', processedPayload ], output });
-		}
-		return output;
+		
+		return [ requestData, requestData.length ];;
 	}
 }
