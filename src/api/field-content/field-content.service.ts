@@ -139,7 +139,7 @@ export class FieldContentService extends BindService {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
 
-		console.log('>>>>', console.log(`SELECT
+		console.log('>>>>', await this.connection.query(`SELECT
 				\`id\`,
 				\`userId\`,
 				\`fieldId\`,
