@@ -139,7 +139,7 @@ export class FieldContentService extends BindService {
 		const filterKeys = Object.keys(processedPayload['filter']);
 		const sortKeys = Object.keys(processedPayload['sort']);
 
-		console.log('>>>>', console.log(`SELECT
+		console.log('>>>>', await this.connection.query(`SELECT
 				\`id\`,
 				\`userId\`,
 				\`fieldId\`,
@@ -152,11 +152,11 @@ export class FieldContentService extends BindService {
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => `\`fieldId\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
+			GROUP BY \`value\`
+			HAVING \`length\` = 1
 			${sortKeys.length > 0
 				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
-			GROUP BY \`value\`
-			HAVING \`length\` = 1
 			${processedPayload['page']
 				? `LIMIT ${processedPayload['page']}${processedPayload['limit']
 					? ``
