@@ -34,6 +34,7 @@ export class ContentTcpController extends TcpController {
 			options['isPush'] = !!options['isPush'];
 		}
 		return await super.validateCreate({
+			accessToken: options['accessToken'],
 			isPush: options['isPush'],
 			contentStatusId: options['contentStatusId'],
 			formId: options['formId'],
