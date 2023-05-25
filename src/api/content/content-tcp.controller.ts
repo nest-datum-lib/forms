@@ -39,21 +39,21 @@ export class ContentTcpController extends TcpController {
 			options['isPush'] = !!options['isPush'];
 		}
 
-		console.log('??????????', await super.validateCreate({
-			accessToken: options['accessToken'],
+		console.log('??????????', {
+			...await super.validateCreate(options), 
 			userId: options['userId'],
-			isPush: options['isPush'],
+			isPush: !!options['isPush'],
 			contentStatusId: options['contentStatusId'],
-			formId: options['formId'],
-		}));
-
-		return await super.validateCreate({
-			accessToken: options['accessToken'],
-			userId: options['userId'],
-			isPush: options['isPush'],
-			contentStatusId: options['contentStatusId'],
-			formId: options['formId'],
+			formId: options['formId']
 		});
+
+		return {
+			...await super.validateCreate(options), 
+			userId: options['userId'],
+			isPush: !!options['isPush'],
+			contentStatusId: options['contentStatusId'],
+			formId: options['formId']
+		};
 	}
 
 	async validateUpdate(options) {
