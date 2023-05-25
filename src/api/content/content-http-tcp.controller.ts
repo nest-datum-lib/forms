@@ -51,12 +51,6 @@ export class ContentHttpTcpController extends HttpTcpController {
 	async validateUpdate(options) {
 		const output = {};
 
-		if (utilsCheckExists(options['userId'])) {
-			if (!utilsCheckStrId(options['userId'])) {
-				throw new MethodNotAllowedException(`Property "userId" is not valid.`);
-			}
-			output['userId'] = options['userId'];
-		}
 		if (utilsCheckExists(options['formId'])) {
 			if (!utilsCheckStrId(options['formId'])) {
 				throw new MethodNotAllowedException(`Property "formId" is not valid.`);
@@ -83,6 +77,7 @@ export class ContentHttpTcpController extends HttpTcpController {
 		@Body('contentStatusId') contentStatusId: string,
 		@Body('formId') formId: string,
 		@Body('isNotDelete') isNotDelete: boolean,
+		@Body('isPush') isPush: boolean,
 	) {
 		return await this.serviceHandlerWrapper(
 			async () => await this.transport.send({
@@ -95,6 +90,7 @@ export class ContentHttpTcpController extends HttpTcpController {
 			contentStatusId,
 			formId,
 			isNotDelete,
+			isPush,
 		})));
 	}
 
