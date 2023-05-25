@@ -39,6 +39,7 @@ export class ContentTcpController extends TcpController {
 
 		console.log('??????????', await super.validateCreate({
 			accessToken: options['accessToken'],
+			userId: options['userId'],
 			isPush: options['isPush'],
 			contentStatusId: options['contentStatusId'],
 			formId: options['formId'],
@@ -46,6 +47,7 @@ export class ContentTcpController extends TcpController {
 
 		return await super.validateCreate({
 			accessToken: options['accessToken'],
+			userId: options['userId'],
 			isPush: options['isPush'],
 			contentStatusId: options['contentStatusId'],
 			formId: options['formId'],

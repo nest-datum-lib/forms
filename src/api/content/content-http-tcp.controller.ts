@@ -40,12 +40,12 @@ export class ContentHttpTcpController extends HttpTcpController {
 			}
 			options['isPush'] = !!options['isPush'];
 		}
-		return await super.validateCreate({
-			accessToken: options['accessToken'],
+		return {
+			...await super.validateCreate(options),
 			isPush: options['isPush'],
 			contentStatusId: options['contentStatusId'],
 			formId: options['formId'],
-		});
+		};
 	}
 
 	async validateUpdate(options) {
