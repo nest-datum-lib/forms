@@ -27,6 +27,9 @@ export class ContentTcpController extends TcpController {
 		if (!utilsCheckStrId(options['formId'])) {
 			throw new MethodNotAllowedException(`Property "formId" is not valid.`);
 		}
+		if (!utilsCheckStrId(options['userId'])) {
+			throw new MethodNotAllowedException(`Property "userId" is not valid.`);
+		}
 		if (utilsCheckExists(options['isPush'])) {
 			if (!utilsCheckBool(options['isPush'])) {
 				throw new MethodNotAllowedException(`Property "isPush" is not valid.`);
