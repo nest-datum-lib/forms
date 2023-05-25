@@ -55,6 +55,8 @@ export class ContentService extends PrimaryService {
 	}
 
 	protected async createBefore(payload): Promise<any> {
+		console.log('>>>>>>>', payload['isPush']);
+
 		if (!payload['isPush']) {
 			const contents = await this.repository.find({
 				relations: {
@@ -80,6 +82,8 @@ export class ContentService extends PrimaryService {
 			}
 		}
 		delete payload['isPush'];
+
+		console.log('payload', payload);
 
 		return await super.createBefore(payload);
 	}
