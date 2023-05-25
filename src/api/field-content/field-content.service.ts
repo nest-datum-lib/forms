@@ -170,7 +170,7 @@ export class FieldContentService extends BindService {
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => utilsCheckArrFilled(processedPayload['filter'][key])
 					? `(${processedPayload['filter'][key].map((item) => `\`${key}\` = "${item}"`).join('OR')})`
-					: `\`${key}\` = "${processedPayload['filter'][key]}"`).join('AND')}`
+					: `\`${key}\` = "${processedPayload['filter'][key]}"`).join(' AND ')}`
 				: ''}
 			${isUnique ? `GROUP BY \`value\` HAVING \`length\` = 1` : ''}
 			${sortKeys.length > 0
