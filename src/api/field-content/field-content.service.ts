@@ -194,14 +194,13 @@ export class FieldContentService extends BindService {
 				\`value\`,
 				\`createdAt\`,
 				\`updatedAt\`
-				${isUnique ? `,COUNT(\`value\`) as \`length\`` : ''}
 			FROM \`field_content\` 
 			${filterKeys.length > 0
 				? `WHERE ${filterKeys.map((key) => utilsCheckArrFilled(processedPayload['filter'][key])
 					? `(${processedPayload['filter'][key].map((item) => `\`${key}\` = "${item}"`).join('OR')})`
 					: `\`${key}\` = "${processedPayload['filter'][key]}"`).join('AND')}`
 				: ''}
-			${isUnique ? `GROUP BY \`value\` HAVING \`length\` = 1` : ''}
+			${isUnique ? `GROUP BY \`value\`` : ''}
 			${sortKeys.length > 0
 				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
 				: ''}
