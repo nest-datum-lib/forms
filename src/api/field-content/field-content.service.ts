@@ -156,6 +156,36 @@ export class FieldContentService extends BindService {
 		}
 		const filterKeys = Object.keys(processedPayload['filter'] || {});
 		const sortKeys = Object.keys(processedPayload['sort'] || {});
+
+		console.log('????????', `SELECT
+				\`id\`,
+				\`userId\`,
+				\`fieldId\`,
+				\`contentId\`,
+				\`value\`,
+				\`createdAt\`,
+				\`updatedAt\`
+				${isUnique ? `,COUNT(\`value\`) as \`length\`` : ''}
+			FROM \`field_content\` 
+			${filterKeys.length > 0
+				? `WHERE ${filterKeys.map((key) => utilsCheckArrFilled(processedPayload['filter'][key])
+					? `(${processedPayload['filter'][key].map((item) => `\`${key}\` = "${item}"`).join('OR')})`
+					: `\`${key}\` = "${processedPayload['filter'][key]}"`).join('AND')}`
+				: ''}
+			${isUnique ? `GROUP BY \`value\` HAVING \`length\` = 1` : ''}
+			${sortKeys.length > 0
+				? `ORDER BY ${sortKeys.map((key) => `\`${key}\` ${processedPayload['sort'][key]}`).join(',')}`
+				: ''}
+			${processedPayload['page']
+				? `LIMIT ${processedPayload['page'] - 1}${processedPayload['limit']
+					? ``
+					: ',20'}`
+				: ''}${processedPayload['limit']
+					? (processedPayload['page']
+						? `,${processedPayload['limit']}`
+						: `LIMIT ${processedPayload['limit']}`)
+					: ''};`);
+
 		const requestData = await this.connection.query(`SELECT
 				\`id\`,
 				\`userId\`,
