@@ -21,8 +21,6 @@ export class ContentTcpController extends TcpController {
 	}
 
 	async validateCreate(options) {
-		console.log('options', options);
-
 		if (!utilsCheckStrId(options['contentStatusId'])) {
 			throw new MethodNotAllowedException(`Property "contentStatusId" is not valid.`);
 		}
@@ -38,15 +36,6 @@ export class ContentTcpController extends TcpController {
 			}
 			options['isPush'] = !!options['isPush'];
 		}
-
-		console.log('??????????', {
-			...await super.validateCreate(options), 
-			userId: options['userId'],
-			isPush: !!options['isPush'],
-			contentStatusId: options['contentStatusId'],
-			formId: options['formId']
-		});
-
 		return {
 			...await super.validateCreate(options), 
 			userId: options['userId'],
@@ -105,8 +94,6 @@ export class ContentTcpController extends TcpController {
 
 	@EventPattern('content.create')
 	async create(payload: object = {}) {
-		console.log('@@@@@@@@@@@@@', payload);
-
 		return await super.create(payload);
 	}
 
