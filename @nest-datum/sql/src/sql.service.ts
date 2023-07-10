@@ -366,7 +366,7 @@ export class SqlService extends ModelService {
 	}
 
 	protected async updateBefore(payload: object): Promise<any> {
-		return await this.createBefore(payload);
+		return await super.updateBefore(payload);
 	}
 
 	protected async updateProperties(payload: object): Promise<object> {
